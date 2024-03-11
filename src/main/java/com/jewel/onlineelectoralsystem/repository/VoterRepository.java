@@ -9,5 +9,4 @@ import java.util.Optional;
 @Repository
 public interface VoterRepository extends JpaRepository<Voter,Integer> {
     Optional<Voter> findByVoterId(Integer voterId);
-    void deleteByVoterId(Integer voterId);
 }

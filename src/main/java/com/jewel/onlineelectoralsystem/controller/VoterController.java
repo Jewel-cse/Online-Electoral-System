@@ -12,9 +12,10 @@ import java.util.Optional;
 
 @RestController
 public class VoterController {
-    //1: get all voter
     @Autowired
     private VoterRepository voterRepository;
+
+    //1: get voter
     @GetMapping("/api/voter-list")
     public ResponseEntity<List<Voter>> getVoterList(){
         return new ResponseEntity<>(voterRepository.findAll(), HttpStatus.OK);
@@ -26,7 +27,7 @@ public class VoterController {
     //2: post voter
     @PostMapping("/api/voters")
     public Voter  addVoter(@RequestBody Voter voter){
-        System.out.println(voter.toString());
+        //System.out.println(voter.toString());
         voter.setId(null);
         return  voterRepository.save(voter);
     }
@@ -37,5 +38,18 @@ public class VoterController {
         //System.out.println("voter id is : "+voterId);
         Voter tempVoter = voterRepository.findByVoterId(voterId).get();
         voterRepository.delete(tempVoter);
+    }
+
+    //4: update a voter info
+    //request voter theke existing id ta find korte hobe
+    //existing id ta request voter e add korte hobe
+    //delete existing voter and add request voter
+    @PatchMapping ("/api/voters")
+    public Voter updateVoterInfo(@RequestBody Voter voter){
+        Voter tempVoter = voterRepository.findByVoterId(voter.getVoterId()).get();
+
+        voterRepository.delete(tempVoter);
+
+        return  voterRepository.save(voter);
     }
 }
