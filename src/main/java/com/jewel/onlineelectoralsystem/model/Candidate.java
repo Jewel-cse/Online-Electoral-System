@@ -4,33 +4,35 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class Candidate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Integer id;
-    private String position_id;
     private String name;
+    private String symbol;
+    private String positionId;
 
     //########## constructors
 
     public Candidate() {
     }
 
-    public Candidate(String position_id, String name) {
-        this.position_id = position_id;
+    public Candidate(String name, String symbol, String positionId) {
         this.name = name;
+        this.symbol = symbol;
+        this.positionId = positionId;
     }
 
-    //######  setter and getter
-    public String getPosition_id() {
-        return position_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPosition_id(String position_id) {
-        this.position_id = position_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -39,5 +41,31 @@ public class Candidate {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getPosition_id() {
+        return positionId;
+    }
+
+    public void setPosition_id(String positionId) {
+        this.positionId = positionId;
+    }
+
+    @Override
+    public String toString() {
+        return "Candidate{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", positionId='" + positionId + '\'' +
+                '}';
     }
 }

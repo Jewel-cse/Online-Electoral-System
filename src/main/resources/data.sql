@@ -7,8 +7,9 @@ VALUES
     (5,1005,'SHAON','SHO123'),
     (6,1006,'HARUN','HAR123');
 
-INSERT INTO Candidate(ID,POSITION_ID,NAME)
+INSERT INTO Candidate(id, NAME, SYMBOL, POSITION_ID)
 VALUES
-    (1,'MP-1','SAYEM'),
-    (2,'CH-1','RAJIB'),
-    (3,'PRES-1','CUNNU_VAI');
+    (1, 'SAYEM', 'BOAT', 'PRES'),
+    (2, 'HARUN', 'PEN', 'PRES'),
+    (3, 'RAJIB', 'PC', 'PRES'),
+    (4, 'HAMID', 'PHONE', 'PRES');
