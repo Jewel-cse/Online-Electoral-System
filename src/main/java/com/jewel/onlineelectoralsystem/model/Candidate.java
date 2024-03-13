@@ -51,11 +51,11 @@ public class Candidate {
         this.symbol = symbol;
     }
 
-    public String getPosition_id() {
+    public String getPositionId() {
         return positionId;
     }
 
-    public void setPosition_id(String positionId) {
+    public void setPositionId(String positionId) {
         this.positionId = positionId;
     }
 
