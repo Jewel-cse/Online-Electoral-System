@@ -1,0 +1,8 @@
+package com.jewel.onlineelectoralsystem.repository;
+
+import com.jewel.onlineelectoralsystem.model.VoteCount;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface VoteProcessRepository extends JpaRepository<VoteCount,String> {
+
+}
