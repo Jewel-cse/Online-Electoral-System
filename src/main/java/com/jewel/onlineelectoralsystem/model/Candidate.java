@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Candidate {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String symbol;
@@ -21,7 +21,8 @@ public class Candidate {
     public Candidate() {
     }
 
-    public Candidate(String name, String symbol, String positionId) {
+    public Candidate(Integer id,String name, String symbol, String positionId) {
+        this.id = id;
         this.name = name;
         this.symbol = symbol;
         this.positionId = positionId;

@@ -2,30 +2,36 @@ package com.jewel.onlineelectoralsystem.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Voter {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer voterId;
     private String password;
     private String name;
+    private boolean voted;
 
     //########### constructors
     public Voter() {
+
+    }
+    public Voter(Boolean voted){
+        this.voted = voted;
     }
 
     public Voter(Integer id, Integer voterId, String password, String name) {
+        this(false);
         this.id = id;
         this.voterId = voterId;
         this.password = password;
         this.name = name;
     }
+
     // ############# Setters and getters
-
-
     public Integer getId() {
         return id;
     }
@@ -58,13 +64,22 @@ public class Voter {
         this.name = name;
     }
 
+    public boolean isVoted() {
+        return voted;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
+    }
+
     @Override
     public String toString() {
         return "Voter{" +
-                "Id=" + id +
+                "id=" + id +
                 ", voterId=" + voterId +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
+                ", voted=" + voted +
                 '}';
     }
 }

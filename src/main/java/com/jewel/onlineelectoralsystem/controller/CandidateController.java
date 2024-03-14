@@ -2,6 +2,7 @@ package com.jewel.onlineelectoralsystem.controller;
 
 import com.jewel.onlineelectoralsystem.model.Candidate;
 import com.jewel.onlineelectoralsystem.repository.CandidateRepository;
+import com.jewel.onlineelectoralsystem.service.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ public class CandidateController {
     @Autowired
     private CandidateRepository candidateRepository;
 
+    @Autowired
+    private CandidateService candidateService;
 
     //get all the candidate by position id
     @GetMapping("api/candidates/{positionId}")
@@ -29,9 +32,11 @@ public class CandidateController {
 
     //add a candidate
     @PostMapping ("api/candidates")
-    public void addCandidate(@RequestBody Candidate candidate){
-        candidate.setId(null);
-        candidateRepository.save(candidate);
+    public Candidate addCandidate(@RequestBody Candidate candidate){
+        if(!candidateService.isDuplicateCandidateIsAdded(candidate.getSymbol())){
+            return candidateRepository.save(candidate);
+        }
+        return null;
     }
 
     //Update a candidate
