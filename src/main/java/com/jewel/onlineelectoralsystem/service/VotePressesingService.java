@@ -32,14 +32,14 @@ public class VotePressesingService {
     public void processVote(String symbol, Integer voterId){
         //voterId->symbol: isVoted- true, and number of vote++;
         Optional<VoteCount> existingVoteCount = voteProcessRepository.findBySymbol(symbol);
-        if(existingVoteCount.isPresent()){
-            // increament vote
-            int count = existingVoteCount.get().getNumberOfVote();
+        Optional<Voter> voter = voterRepository.findByVoterId(voterId);
+        if(existingVoteCount.isPresent() && !voter.get().isVoted()){
+             // increament vote
+             int count = existingVoteCount.get().getNumberOfVote();
              existingVoteCount.get().setNumberOfVote(count+1);
              voteProcessRepository.save(existingVoteCount.get());
 
-             //true voted status
-             Optional<Voter> voter = voterRepository.findByVoterId(voterId);
+             // make true the is voted field of voter
              voter.get().setVoted(true);
              voterRepository.save(voter.get());
         }
