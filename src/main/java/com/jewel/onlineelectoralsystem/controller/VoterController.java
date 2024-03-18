@@ -47,9 +47,6 @@ public class VoterController {
     }
 
     //4: update a voter info
-    //request voter theke existing id ta find korte hobe
-    //existing id ta request voter e add korte hobe
-    //delete existing voter and add request voter
     @PatchMapping ("/api/voters/{voterId}")
     public Voter updateVoterInfo(@RequestBody Voter voter,@PathVariable Integer voterId){
         Voter tempVoter = voterRepository.findByVoterId(voterId).get();
