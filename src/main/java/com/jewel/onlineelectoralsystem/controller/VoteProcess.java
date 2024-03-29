@@ -9,8 +9,8 @@ public class VoteProcess {
     @Autowired
     private VotePressesingService votePressesingService;
     //cast vote
-    @GetMapping("/api/cast-vote/{voterId}/{symbol}")
-    public void castingVote(@PathVariable Integer voterId,@PathVariable String symbol){
-        votePressesingService.processVote(symbol,voterId);
+    @GetMapping("/api/cast-vote/{voterId}/{positionId}/{symbol}")
+    public void castingVoteOfSpecificPosition(@PathVariable Integer voterId,@PathVariable String positionId,@PathVariable String symbol){
+        votePressesingService.processVote(voterId,positionId,symbol);
     }
 }

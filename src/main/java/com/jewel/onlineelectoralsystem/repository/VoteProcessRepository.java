@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface VoteProcessRepository extends JpaRepository<VoteCount,String> {
     Optional<VoteCount> findBySymbol(String symbol);
+    Optional<VoteCount> findByPositionIdAndSymbol(String positionId, String symbol);
+
 }

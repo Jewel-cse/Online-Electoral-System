@@ -35,8 +35,8 @@ public class CandidateController {
     //add a candidate
     @PostMapping ("api/candidates")
     public Candidate addCandidate(@RequestBody Candidate candidate){
-        if(!candidateService.isDuplicateCandidateIsAdded(candidate.getSymbol())){
-            votePressesingService.initializeVoteForCandidate(candidate.getSymbol(),0);
+        if(!candidateService.isDuplicateCandidateIsAdded(candidate.getSymbol(),candidate.getPositionId())){
+            votePressesingService.initializeVoteForCandidate(candidate.getPositionId(),candidate.getSymbol());
             return candidateRepository.save(candidate);
         }
         return null;
@@ -45,8 +45,15 @@ public class CandidateController {
     //Update a candidate
     @PutMapping("/api/candidates")
     public Candidate updateCandidate(@RequestBody Candidate candidate){
-        Candidate temp = candidateRepository.findById(candidate.getId()).get();
-        candidateRepository.delete(temp);
-        return  candidateRepository.save(candidate);
+        if(!candidateService.isDuplicateCandidateIsAdded(candidate.getSymbol(),candidate.getPositionId())){
+            //find existing -> delete it -> post updated candidate with initialization vote-cast
+            Candidate temp = candidateRepository.findById(candidate.getId()).get();
+
+            candidateRepository.delete(temp);
+
+            votePressesingService.initializeVoteForCandidate(candidate.getPositionId(),candidate.getSymbol());
+            return  candidateRepository.save(candidate);
+        }
+        return null;
     }
 }

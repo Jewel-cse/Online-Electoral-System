@@ -12,8 +12,10 @@ public class CandidateService {
     @Autowired
     private CandidateRepository candidateRepository;
 
-    public boolean isDuplicateCandidateIsAdded(String symbol){
+    public boolean isDuplicateCandidateIsAdded(String symbol,String positionId){
         Optional<Candidate> existsCandidate = candidateRepository.findBySymbol(symbol);
-        return existsCandidate.isPresent();
+        if(existsCandidate.isEmpty())
+            return false;
+        return existsCandidate.get().getPositionId().equals(positionId);
     }
 }

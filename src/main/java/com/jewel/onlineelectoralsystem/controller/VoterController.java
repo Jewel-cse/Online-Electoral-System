@@ -2,6 +2,7 @@ package com.jewel.onlineelectoralsystem.controller;
 
 import com.jewel.onlineelectoralsystem.model.Voter;
 import com.jewel.onlineelectoralsystem.repository.VoterRepository;
+import com.jewel.onlineelectoralsystem.service.VotePressesingService;
 import com.jewel.onlineelectoralsystem.service.VoterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ public class VoterController {
     @Autowired
     private  VoterService voterService;
 
+    @Autowired
+    VotePressesingService votePressesingService;
+
     //1: get voter
     @GetMapping("/api/voter-list")
     public ResponseEntity<List<Voter>> getVoterList(){
@@ -32,7 +36,7 @@ public class VoterController {
     @PostMapping("/api/voters")
     public Voter  addVoter(@RequestBody Voter voter){
         if(!voterService.isDuplicateVoterAdded(voter.getVoterId())){
-            voter.setId(null);
+            votePressesingService.initializeVoteTrack(voter.getVoterId());
             return  voterRepository.save(voter);
         }
         return null; //try to post  duplicate voter.
