@@ -36,6 +36,7 @@ public class CandidateController {
     @PostMapping ("api/candidates")
     public Candidate addCandidate(@RequestBody Candidate candidate){
         if(!candidateService.isDuplicateCandidateIsAdded(candidate.getSymbol(),candidate.getPositionId())){
+            System.out.println("Hello candidate is posting.........");
             votePressesingService.initializeVoteForCandidate(candidate.getPositionId(),candidate.getSymbol());
             return candidateRepository.save(candidate);
         }

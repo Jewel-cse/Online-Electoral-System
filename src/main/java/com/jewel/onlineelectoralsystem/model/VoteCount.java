@@ -1,56 +1,53 @@
 package com.jewel.onlineelectoralsystem.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.jewel.onlineelectoralsystem.utility.VoteCountKey;
+import jakarta.persistence.*;
 
 @Entity
 public class VoteCount {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String positionId;
-    private String symbol;
+    @EmbeddedId
+    private VoteCountKey id;
     private Integer numberOfVote;
 
     public VoteCount() {
     }
 
-    public VoteCount(String positionId, String symbol, Integer numberOfVote) {
-        this.id = 0;
-        this.positionId = positionId;
-        this.symbol = symbol;
-        this.numberOfVote = numberOfVote;
-    }
-    public VoteCount(Integer id, String positionId, String symbol, Integer numberOfVote) {
+    public VoteCount(VoteCountKey id, Integer numberOfVote) {
         this.id = id;
-        this.positionId = positionId;
-        this.symbol = symbol;
         this.numberOfVote = numberOfVote;
     }
-    public Integer getId() {
+
+    //    public Integer getId() {
+//        return id;
+//    }
+//
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
+//
+//    public String getSymbol() {
+//        return symbol;
+//    }
+//
+//    public void setSymbol(String symbol) {
+//        this.symbol = symbol;
+//    }
+//    public String getPositionId() {
+//        return positionId;
+//    }
+//
+//    public void setPositionId(String positionId) {
+//        this.positionId = positionId;
+//    }
+
+
+    public VoteCountKey getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(VoteCountKey id) {
         this.id = id;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-    public String getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(String positionId) {
-        this.positionId = positionId;
     }
 
     public Integer getNumberOfVote() {
@@ -64,10 +61,8 @@ public class VoteCount {
     @Override
     public String toString() {
         return "VoteCount{" +
-                "symbol='" + symbol + '\'' +
-                ", positionId='" + positionId + '\'' +
+                "id=" + id +
                 ", numberOfVote=" + numberOfVote +
                 '}';
     }
-
 }

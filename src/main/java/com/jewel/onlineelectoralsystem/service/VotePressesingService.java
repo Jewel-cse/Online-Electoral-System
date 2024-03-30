@@ -4,11 +4,10 @@ import com.jewel.onlineelectoralsystem.model.VoteCount;
 import com.jewel.onlineelectoralsystem.model.VoteRecord;
 import com.jewel.onlineelectoralsystem.model.Voter;
 import com.jewel.onlineelectoralsystem.repository.CandidateRepository;
-import com.jewel.onlineelectoralsystem.repository.VoteProcessRepository;
+import com.jewel.onlineelectoralsystem.repository.VoteCountRepository;
 import com.jewel.onlineelectoralsystem.repository.VoteTrackRepo;
 import com.jewel.onlineelectoralsystem.repository.VoterRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import com.jewel.onlineelectoralsystem.utility.VoteCountKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +20,14 @@ public class VotePressesingService {
     @Autowired
     private CandidateRepository candidateRepository;
     @Autowired
-    VoteProcessRepository voteProcessRepository;
+    VoteCountRepository voteCountRepository;
 
     @Autowired
     VoteTrackRepo voteTrackRepo;
 
     //save vote count initializations if any candidate is added/post
     public void initializeVoteForCandidate(String positionId, String symbol ){
-        voteProcessRepository.save(new VoteCount(symbol,positionId,0));
+        voteCountRepository.save(new VoteCount(new VoteCountKey(positionId,symbol),0));
     }
 
     //voter track record initialize when post
@@ -37,36 +36,36 @@ public class VotePressesingService {
     }
     public void processVote(Integer voterId,String positionId,String symbol){
         //voterId->symbol: isVoted- true, and number of vote++;
-        Optional<VoteCount> existingVoteCount = voteProcessRepository.findByPositionIdAndSymbol(positionId,symbol);
-        Optional<VoteRecord> voteRecord = voteTrackRepo.findByVoterId(voterId);
-        Optional<Voter> voter = voterRepository.findByVoterId(voterId);
+        VoteCount existingVoteCount = voteCountRepository.findById(new VoteCountKey(positionId,symbol)).orElse(null);
+        VoteRecord voteRecord = voteTrackRepo.findByVoterId(voterId).orElse(null);
+        Voter voter = voterRepository.findByVoterId(voterId).orElse(null);
 
         System.out.println(existingVoteCount);
         System.out.println(voteRecord);
         System.out.println(voter);
 
-        if(existingVoteCount.isPresent() && !voter.get().isVoted()){
+        if(existingVoteCount != null && !voter.isVoted()){
              // increament vote
-             int count = existingVoteCount.get().getNumberOfVote();
-             existingVoteCount.get().setNumberOfVote(count+1);
-             voteProcessRepository.save(existingVoteCount.get());
+             int count = existingVoteCount.getNumberOfVote();
+             existingVoteCount.setNumberOfVote(count+1);
+             voteCountRepository.save(existingVoteCount);
         }
         //check position id and make vote for particular position and save
-        if(voteRecord.isPresent()){
+        if(voteRecord != null){
             switch (positionId){
-                case "president": voteRecord.get().setCastPresidentVote(true);voteTrackRepo.save(voteRecord.get());break;
-                case "mp": voteRecord.get().setCastMPVote(true);voteTrackRepo.save(voteRecord.get());break;
-                case "chairman": voteRecord.get().setCastChairmanVote(true);voteTrackRepo.save(voteRecord.get());break;
-                case "member": voteRecord.get().setCastMemberVote(true);voteTrackRepo.save(voteRecord.get());break;
+                case "president": voteRecord.setCastPresidentVote(true);voteTrackRepo.save(voteRecord);break;
+                case "mp": voteRecord.setCastMPVote(true);voteTrackRepo.save(voteRecord);break;
+                case "chairman": voteRecord.setCastChairmanVote(true);voteTrackRepo.save(voteRecord);break;
+                case "member": voteRecord.setCastMemberVote(true);voteTrackRepo.save(voteRecord);break;
                 default:
                     System.out.println("you select invalid position id");break;
             }
         }
         //make voter.voted if all vote are completed
-        if(voter.isPresent() && voteRecord.isPresent() && voteRecord.get().isCastChairmanVote() && voteRecord.get().isCastMemberVote()
-        && voteRecord.get().isCastMPVote() && voteRecord.get().isCastPresidentVote()){
-            voter.get().setVoted(true);
-            voterRepository.save(voter.get());
+        if(voter != null && voteRecord != null && voteRecord.isCastChairmanVote() && voteRecord.isCastMemberVote()
+        && voteRecord.isCastMPVote() && voteRecord.isCastPresidentVote()){
+            voter.setVoted(true);
+            voterRepository.save(voter);
         }
     }
 }

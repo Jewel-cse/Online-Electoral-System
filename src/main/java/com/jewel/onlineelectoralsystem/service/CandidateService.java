@@ -1,9 +1,9 @@
 package com.jewel.onlineelectoralsystem.service;
 
-import com.jewel.onlineelectoralsystem.model.Candidate;
 import com.jewel.onlineelectoralsystem.model.VoteCount;
 import com.jewel.onlineelectoralsystem.repository.CandidateRepository;
-import com.jewel.onlineelectoralsystem.repository.VoteProcessRepository;
+import com.jewel.onlineelectoralsystem.repository.VoteCountRepository;
+import com.jewel.onlineelectoralsystem.utility.VoteCountKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +15,15 @@ public class CandidateService {
     private CandidateRepository candidateRepository;
 
     @Autowired
-    VoteProcessRepository voteProcessRepository;
+    private  VoteCountRepository voteCountRepository;
     public boolean isDuplicateCandidateIsAdded(String symbol,String positionId){
-        //Optional<Candidate> existsCandidate = candidateRepository.findBySymbol(symbol);
-        Optional<VoteCount> existsCandidate = voteProcessRepository.findByPositionIdAndSymbol(positionId,symbol);
-        if(existsCandidate.isEmpty())
+        //VoteCountKey id = new VoteCountKey(positionId,symbol);
+        VoteCount existsCandidate = voteCountRepository.findById(new VoteCountKey(positionId,symbol)).orElse(null);
+        System.out.println(existsCandidate);
+        if(existsCandidate == null){
+            System.out.println("it is not duplicate vote count......");
             return false;
-        //return existsCandidate.get().getPositionId().equals(positionId);
+        }
         return true;
     }
 }
