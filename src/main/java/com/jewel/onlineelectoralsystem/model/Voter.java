@@ -19,16 +19,13 @@ public class Voter {
     public Voter() {
 
     }
-    public Voter(Boolean voted){
-        this.voted = voted;
-    }
 
     public Voter(Integer id, Integer voterId, String password, String name) {
-        this(false);
         this.id = id;
         this.voterId = voterId;
         this.password = password;
         this.name = name;
+        this.voted = false;
     }
 
     // ############# Setters and getters

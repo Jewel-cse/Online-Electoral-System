@@ -37,6 +37,7 @@ public class VoterController {
     public Voter  addVoter(@RequestBody Voter voter){
         if(!voterService.isDuplicateVoterAdded(voter.getVoterId())){
             votePressesingService.initializeVoteTrack(voter.getVoterId());
+            voter.setVoted(false);
             return  voterRepository.save(voter);
         }
         return null; //try to post  duplicate voter.

@@ -1,12 +1,16 @@
 package com.jewel.onlineelectoralsystem.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class VoteCount {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String positionId;
     private String symbol;
     private Integer numberOfVote;
@@ -14,10 +18,24 @@ public class VoteCount {
     public VoteCount() {
     }
 
-    public VoteCount(String symbol, String positionId, Integer numberOfVote) {
-        this.symbol = symbol;
+    public VoteCount(String positionId, String symbol, Integer numberOfVote) {
+        this.id = 0;
         this.positionId = positionId;
+        this.symbol = symbol;
         this.numberOfVote = numberOfVote;
+    }
+    public VoteCount(Integer id, String positionId, String symbol, Integer numberOfVote) {
+        this.id = id;
+        this.positionId = positionId;
+        this.symbol = symbol;
+        this.numberOfVote = numberOfVote;
+    }
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getSymbol() {
@@ -51,4 +69,5 @@ public class VoteCount {
                 ", numberOfVote=" + numberOfVote +
                 '}';
     }
+
 }
