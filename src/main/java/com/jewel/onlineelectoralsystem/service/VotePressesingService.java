@@ -34,6 +34,24 @@ public class VotePressesingService {
     public void initializeVoteTrack(Integer voterId){
         voteTrackRepo.save(new VoteRecord(voterId,false,false,false,false));
     }
+
+    //check if already voted for a particular position id;
+    boolean isAlreadyVotedForPosition(Integer voterId,String positionId){
+        VoteRecord voteRecord = voteTrackRepo.findByVoterId(voterId).orElse(null);
+        switch (positionId){
+            case "president":
+                return voteRecord.isCastPresidentVote();
+            case "mp":
+                return voteRecord.isCastMPVote();
+            case "chairman":
+                return voteRecord.isCastChairmanVote();
+            case "member":
+                return voteRecord.isCastMemberVote();
+            default:
+                System.out.println("Position is out of scope");
+        }
+        return false;
+    }
     public void processVote(Integer voterId,String positionId,String symbol){
         //voterId->symbol: isVoted- true, and number of vote++;
         VoteCount existingVoteCount = voteCountRepository.findById(new VoteCountKey(positionId,symbol)).orElse(null);
@@ -43,15 +61,18 @@ public class VotePressesingService {
         System.out.println(existingVoteCount);
         System.out.println(voteRecord);
         System.out.println(voter);
+        if(existingVoteCount == null || voteRecord == null || voter == null)
+            return;
 
-        if(existingVoteCount != null && !voter.isVoted()){
+        if(!voter.isVoted() && !isAlreadyVotedForPosition(voterId,positionId)){
+
              // increament vote
              int count = existingVoteCount.getNumberOfVote();
              existingVoteCount.setNumberOfVote(count+1);
              voteCountRepository.save(existingVoteCount);
-        }
-        //check position id and make vote for particular position and save
-        if(voteRecord != null){
+
+            //check position id and make vote for particular position and save
+
             switch (positionId){
                 case "president": voteRecord.setCastPresidentVote(true);voteTrackRepo.save(voteRecord);break;
                 case "mp": voteRecord.setCastMPVote(true);voteTrackRepo.save(voteRecord);break;
@@ -62,7 +83,7 @@ public class VotePressesingService {
             }
         }
         //make voter.voted if all vote are completed
-        if(voter != null && voteRecord != null && voteRecord.isCastChairmanVote() && voteRecord.isCastMemberVote()
+        if(voteRecord.isCastChairmanVote() && voteRecord.isCastMemberVote()
         && voteRecord.isCastMPVote() && voteRecord.isCastPresidentVote()){
             voter.setVoted(true);
             voterRepository.save(voter);
