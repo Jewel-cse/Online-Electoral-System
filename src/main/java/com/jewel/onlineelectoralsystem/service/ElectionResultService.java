@@ -57,6 +57,23 @@ public class ElectionResultService {
                 .sum();
     }
 
+    public int getTotalVoteCast(String positionId){
+        switch (positionId){
+            case "mp":
+                return getTotalCastMPVote();
+            case "president":
+                return getTotalCastPresidentVote();
+            case "member":
+                return getTotalCastMemberVote();
+            case "chairman":
+                return getTotalCastChairmanVote();
+            default:
+                System.out.println("Illegal position you entered!!!");
+        }
+        return 0;
+    }
+
+    //give the VoteCount : positionId, symbol, number of vote for a specific positionId.
     public List<VoteCount> getResult(String positionId){
         return voteCountRepository.findByIdPositionId(positionId).orElse(null);
     }
