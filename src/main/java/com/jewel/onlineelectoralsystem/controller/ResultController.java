@@ -24,7 +24,6 @@ public class ResultController {
     private WinnerService winnerService;
     @GetMapping("/api/election-result/{positionId}")
     public ResponseEntity<List<VoteCount>> getResult(@PathVariable String positionId){
-
         Result res = new Result(electionResultService.getTotalCastPresidentVote()
                 , electionResultService.getTotalCastMPVote()
                 , electionResultService.getTotalCastChairmanVote()

@@ -13,8 +13,11 @@ import VotineInterface from "./components/vote/VoteInterface";
 
 import "bootstrap/dist/css/bootstrap.css";
 import Ballot from "./components/vote/Ballot";
+import CandidateList from "./components/candidate/Candidate-list";
+import Candidate from "./components/candidate/Candidate";
 
 export default function App() {
+  
   return (
     <BrowserRouter>
       <Routes>
@@ -24,12 +27,17 @@ export default function App() {
           <Route path="/admin/voter" element={<VoterComponent />} />
         </Route>
         <Route
+          path="/admin/candidates/:positionId"
+          element={<CandidateList/>}
+        ></Route>
+        <Route path="/admin/candidate/:id" element = {<Candidate/>}></Route>
+        <Route
           path="/user/voting-interface"
           element={<VotineInterface />}
         ></Route>
         <Route
           path="/user/voting-interface/Ballot"
-          element={<Ballot/>}
+          element={<Ballot />}
         ></Route>
 
         <Route path="*" element={<NotFound />} />
