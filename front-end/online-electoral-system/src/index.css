@@ -1,0 +1,14 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.heading {
+  font-size: 24px; /* Increase font size for the heading */
+}
+
+.table-header {
+  background-color: blue; /* Add background color to the table header */
+  color: white; /* Set text color to white for better visibility */
+  font-size: 18px; /* You can adjust the font size as needed */
+}
