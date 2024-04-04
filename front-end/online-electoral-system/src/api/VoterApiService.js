@@ -4,14 +4,25 @@ export const apiClient = axios.create({
   baseURL: "http://localhost:8080",
 });
 
-export const retrieveVoterListApi = () => apiClient.get("/api/voter-list");
-export const retrieveVoterApi = (voterId) =>
-  apiClient.get(`/api/voters/${voterId}`);
+export const retrieveVoterListApi = () => {
+  return apiClient.get("/api/voter-list");
+}
+  
+export const retrieveVoterApi = (id) => {
+  return apiClient.get(`/api/voters/${id}`);
+}
+  
 
-export const deleteVoterApi = (voterId) =>
-  apiClient.delete(`api/voters/${voterId}`);
+export const deleteVoterApi = (voterId) => {
+  return apiClient.delete(`api/voters/${voterId}`);
+}
+  
 
-export const updateVoterApi = (voterId) =>
-  apiClient.patch(`/api/voters/${voterId}`);
+export const updateVoterApi = (voterId) => {
+  return apiClient.patch(`/api/voters/${voterId}`);
+}
+  
 
-export const addnewVoterApi = (voter) => apiClient.post(`/api/voters`,voter);
+export const addnewVoterApi = (voter) => {
+  return apiClient.post(`/api/voters`, voter);
+}

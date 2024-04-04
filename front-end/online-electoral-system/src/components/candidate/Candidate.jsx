@@ -1,37 +1,37 @@
 import { useNavigate, useParams } from "react-router-dom";
-
 import {
-  retrieveAllCandidateApi,
+  retrieveCandidateApi,
   createCandidateApi,
+  updateCandidateApi,
 } from "../../api/CandidateApiService";
 import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 export default function Candidate() {
-  const { id } = useParams();
-
-  const [name, setName] = useState("");
-  const [symbol, setSymbol] = useState("");
-  const [positionId, setPositionId] = useState("");
+  const { id } = useParams(); // Correctly extract id from URL params
+  const [candidatedata, setCandidatedata] = useState({
+    name: "",
+    positionId: "",
+    symbol: "",
+  });
 
   const navigate = useNavigate();
 
-  //   useEffect(
-  //     () => retrieveCandidate(),
-  //     [id] //id change holei retrieveTodo() call hobe, [id] dependency array
-  //   );
+  useEffect(() => {
+    if (id !== "-1") {
+      // Make sure to avoid unnecessary API call for -1 id
+      retrieveCandidate();
+    }
+  }, [id]);
 
-  //   function retrieveCandidate() {
-  //     if (id != -1) {
-  //       retrieveTodoApi(username, id)
-  //         .then((response) => {
-  //           setDescription(response.data.description);
-  //           setTargetDate(response.data.targetDate);
-  //           console.log(response.data);
-  //         })
-  //         .catch((error) => console.log(error));
-  //     }
-  //   }
+  function retrieveCandidate() {
+    retrieveCandidateApi(id)
+      .then((response) => {
+        const { name, positionId, symbol } = response.data;
+        setCandidatedata({ name, positionId, symbol });
+      })
+      .catch((error) => console.log(error));
+  }
 
   function onSubmit(values) {
     console.log(values, "-for submit");
@@ -40,40 +40,39 @@ export default function Candidate() {
       positionId: values.positionId,
       symbol: values.symbol,
     };
-    //console.log(todo,'-todo object')
-    if (id == -1) {
+    if (id !== "-1") {
+      updateCandidateApi(id, candidate) // Pass id to updateCandidateApi
+        .then((response) => {
+          navigate(`/admin/candidates/${candidate.positionId}`);
+        })
+        .catch((error) => console.log(error));
+    } else {
       createCandidateApi(candidate)
         .then((response) => {
           navigate(`/admin/candidates/${candidate.positionId}`);
         })
         .catch((error) => console.log(error));
     }
-    // else {
-    //   updateTodoApi(username, id, todo)
-    //     .then((response) => {
-    //       navigate("/todos");
-    //     })
-    //     .catch((error) => console.log(error));
-    // }
   }
 
   function validate(values) {
     let error = {};
     if (values.name.length < 3)
-      error.name = "Enter atleast 3 characters for name";
+      error.name = "Enter at least 3 characters for name";
     if (
-      values.positionId != "mp" &&
-      values.positionId != "president" &&
-      values.positionId != "chairman" &&
-      values.positionId != "member"
+      values.positionId !== "mp" &&
+      values.positionId !== "president" &&
+      values.positionId !== "chairman" &&
+      values.positionId !== "member"
     )
-      error.positionId = "Enter  a valid positionId";
+      error.positionId = "Enter a valid positionId";
 
     if (values.symbol.length < 3)
-      error.name = "Enter atleast 3 characters for symbol";
+      error.symbol = "Enter at least 3 characters for symbol";
     console.log(values, "- for validation");
     return error;
   }
+
   return (
     <div className="container">
       <h2 className="heading" style={{ textAlign: "center" }}>
@@ -81,7 +80,7 @@ export default function Candidate() {
       </h2>
       <div>
         <Formik
-          initialValues={{ name, positionId, symbol }}
+          initialValues={candidatedata}
           enableReinitialize={true}
           onSubmit={onSubmit}
           validate={validate}
@@ -108,35 +107,27 @@ export default function Candidate() {
 
               <fieldset className="from-group">
                 <label>Name</label>
-                <Field type="text" className="form-control" name="name"></Field>
+                <Field type="text" className="form-control" name="name" />
               </fieldset>
               <fieldset className="from-group">
                 <label>Position</label>
-                <Field
-                  type="text"
-                  className="form-control"
-                  name="positionId"
-                ></Field>
+                <Field type="text" className="form-control" name="positionId" />
               </fieldset>
               <fieldset className="from-group">
                 <label>Symbol</label>
-                <Field
-                  type="text"
-                  className="form-control"
-                  name="symbol"
-                ></Field>
+                <Field type="text" className="form-control" name="symbol" />
               </fieldset>
               <div>
                 <button
                   style={{
                     background: "blue",
-                    display: "flex", // Set display to flex
-                    justifyContent: "center", // Center the button horizontally
-                    alignItems: "center", // Center the button vertically
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                     width: "100px",
                     margin: "0 auto",
                   }}
-                  className="btn btn-success m-5 px-8 "
+                  className="btn btn-success m-5 px-8"
                   type="submit"
                 >
                   Save

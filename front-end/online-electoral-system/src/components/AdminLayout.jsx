@@ -3,6 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 
 
 export default function AdminLayout({ children }) {
+  const positionId = 'president'
   return (
     <div className="flex h-screen">
       {/* Left Side */}
@@ -20,7 +21,7 @@ export default function AdminLayout({ children }) {
           </li>
           <li>
             <Link
-              to="/admin/candidate-list"
+              to="/admin/candidate-dashboard"
               className="block text-blue-500 hover:text-blue-700"
             >
               Candidate

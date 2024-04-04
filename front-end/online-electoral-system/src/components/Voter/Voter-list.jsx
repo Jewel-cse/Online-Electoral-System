@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
-import { deleteVoterApi, retrieveVoterListApi } from "../api/VoterApiService";
-import { useNavigate } from "react-router-dom";
+import {deleteVoterApi,retrieveVoterListApi,} from "../../api/VoterApiService";
+import { useNavigate, useParams } from "react-router-dom";
 
 const VoterListComponent = () => {
   //show the list: get voter list
-  const [deleteMessage, setDeleteMessage] = useState(null);
+
+  const{id} = useParams()
   const [voters, setVoters] = useState([]);
-  const nevigate = useNavigate();
+  const [deleteMessage, setDeleteMessage] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     refreshVoters();
-  }, []);
+  }, [id]);
   function refreshVoters() {
     retrieveVoterListApi()
       .then((response) => {
@@ -32,24 +34,24 @@ const VoterListComponent = () => {
       .catch((error) => console.log(error));
   }
 
-  //update voter
-  function updateVoter(voterId) {}
-
   //add new Voter
   function addVoter() {
     console.log("add new -clicked");
-    nevigate(`/admin/voter`);
+    navigate("/admin/voter");
   }
 
   return (
     <div className="overflow-x-auto px-8 py-8">
       <div className="flex justify-between mb-4">
         <div>
-          <h3>Voter list</h3>
+          <h1>Voter list</h1>
         </div>
-        {deleteMessage && <div className="text-clip ">{deleteMessage}</div>}
+        
         <div>
-          <button className=" bg-teal-500 px-4 py-1 rounded hover:bg-teal-600 text-white" onClick={addVoter}>
+          <button
+            className=" bg-teal-500 px-4 py-1 rounded hover:bg-teal-600 text-white"
+            onClick={addVoter}
+          >
             Add new
           </button>
         </div>
@@ -85,7 +87,7 @@ const VoterListComponent = () => {
                   <td className="px-4 py-2 border border-gray-500">
                     <span
                       className={`${
-                        voter.voted ? "bg-green-500 " : "bg-red-500 "
+                        voter.voted ? "bg-green-400 " : "bg-red-400 "
                       } text-xs rounded-xl px-3 py-1 text-white`}
                     >
                       {voter.voted.toString()}
@@ -94,7 +96,7 @@ const VoterListComponent = () => {
                   <td className="space-x-6 w-[20%]">
                     <button
                       className="text-black bg-teal-600 px-4 py-1 rounded hover:bg-teal-700"
-                      onClick={() => updateVoter(voter.voterId)}
+                      //onClick={() => updateVoter(voter.voterId)}
                     >
                       <FiEdit color="#fff" />
                     </button>

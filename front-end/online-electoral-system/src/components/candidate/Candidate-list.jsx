@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
-import { deleteCandidateApi, retrieveAllCandidateApi } from "../../api/CandidateApiService";
+import {
+  deleteCandidateApi,
+  retrieveAllCandidateApi,
+} from "../../api/CandidateApiService";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CandidateList = () => {
   const { positionId } = useParams();
   const [candidates, setCandidate] = useState([]);
-    const navigate = useNavigate();
-    const[deleteMessage,setDeleteMessage] = useState("null")
+  const [deleteMessage, setDeleteMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     refreshCandidate();
@@ -16,7 +19,6 @@ const CandidateList = () => {
   function refreshCandidate() {
     retrieveAllCandidateApi(positionId)
       .then((response) => {
-        console.log(response.data);
         setCandidate(response.data);
       })
       .catch((error) => console.log(error));
@@ -25,35 +27,35 @@ const CandidateList = () => {
   //add candidate function
   function addCandidate() {
     console.log("add new button clicked!!!");
-    navigate(`/admin/candidate/-1`);
-    }
+    navigate(`/admin/candidate/id/-1`);
+  }
 
-    // function deleteVoter(voterId) {
-    //   deleteVoterApi(voterId)
-    //     .then(() => {
-    //       setDeleteMessage(`Delete voter id with ${voterId}`);
-    //       refreshVoters();
-    //     })
-    //     .catch((error) => console.log(error));
-    // }
-    
-    //delete candidate function
-    function deleteCandidate(id) {
-        console.log(`you clicked delete button of ${id}`)
-        deleteCandidateApi(id)
-            .then(() => {
-                setDeleteMessage(`Delete candidate with id ${id}`)
-                refreshCandidate()
-            })
-        .catch((error) =>{console.log(error)})
-    }
+  function updateCandidate(id) {
+    console.log('update button clicked!!')
+    navigate(`/admin/candidate/id/${id}`)
+  }
+
+  //delete candidate function
+  function deleteCandidate(id) {
+    console.log(`you clicked delete button of ${id}`);
+    deleteCandidateApi(id)
+      .then(() => {
+        setDeleteMessage(`Delete candidate with id ${id}`);
+        refreshCandidate();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   return (
     <div className="overflow-x-auto px-8 py-8">
       <div className="flex justify-between mb-4">
         <div>
           <h1 className="heading">Candidate list</h1>
         </div>
-
+        <div>
+          {deleteMessage && <h2 style={{color:"red"}}>{ deleteMessage}</h2>}
+        </div>
         <div>
           <button
             className=" bg-teal-500 px-4 py-1 rounded hover:bg-teal-600 text-white"
@@ -92,7 +94,7 @@ const CandidateList = () => {
                   <td className="space-x-6 w-[20%]">
                     <button
                       className="text-black bg-teal-600 px-4 py-1 rounded hover:bg-teal-700"
-                      //onClick={() => updateVoter(Candidate.id)}
+                      onClick={() => updateCandidate(Candidate.id)}
                     >
                       <FiEdit color="#fff" />
                     </button>
