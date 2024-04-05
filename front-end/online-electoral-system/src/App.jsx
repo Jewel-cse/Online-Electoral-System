@@ -26,7 +26,7 @@ export default function App() {
         <Route path="/admin" element={<AdminLayout />}>
           {/* voter operation */}
           <Route path="voter-list" element={<VoterListComponent />} />
-          <Route path="voter" element={<VoterComponent />} />
+          <Route path="voter/:id" element={<VoterComponent/>} />
           {/* candidateoperation */}
           <Route path="candidate-dashboard" element = {<CandidateDashboard/>}/>
           <Route path="candidates/:positionId" element={<CandidateList />} />

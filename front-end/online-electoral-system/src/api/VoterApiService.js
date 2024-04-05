@@ -14,12 +14,12 @@ export const retrieveVoterApi = (id) => {
   
 
 export const deleteVoterApi = (voterId) => {
-  return apiClient.delete(`api/voters/${voterId}`);
+  return apiClient.delete(`/api/voters/${voterId}`);
 }
   
 
-export const updateVoterApi = (voterId) => {
-  return apiClient.patch(`/api/voters/${voterId}`);
+export const updateVoterApi = (id,voter) => {
+  return apiClient.patch(`/api/voters/${id}`,voter);
 }
   
 

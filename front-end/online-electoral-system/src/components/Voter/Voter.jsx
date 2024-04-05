@@ -1,66 +1,80 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ErrorMessage, Field, Formik,Form } from "formik";
-import { addnewVoterApi, retrieveVoterApi } from "../../api/VoterApiService";
+import { addnewVoterApi, retrieveVoterApi, updateVoterApi } from "../../api/VoterApiService";
 
 export default function VoterComponent() {
-  //const { id } = useParams();
-  const [name, setName] = useState("");
-  const [voterId,setVoterId] = useState()
-  const [password, setPassword] = useState("");
-  const [voted, setVoted] = useState(false);
-
+  
+  const { id } = useParams()
+  const [voterdata, setVoterdata] = useState({
+    voterId: "",
+    name: "",
+    password: "",
+    voted:""
+  })
   const navigate = useNavigate()
 
-  // useEffect(
-  //   () => retrieveVoterApi(),
-  //   [voterId] //id change holei retrieveTodo() call hobe, [id] dependency array
-  // );
+  useEffect(
+    () => {
+      if (id !== "-1") {
+        retrieveVoter();
+      }
+    }, 
+    [id] //id change holei retrieveTodo() call hobe, [id] dependency array
+  );
 
-  // function retrieveVoter() {
-  //   retrieveVoterApi(voterId)
-  //     .then((response) => {
-  //       setName(response.data.name);
-  //       setPassword(response.data.password);
-  //       setVoted(response.data.voted);
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => console.log(error));
-  // }
-
-  function onSubmit(values) {
-    console.log(values, "-for submit");
-    const voter = {
-      voterId: values.voterId,
-      name: values.name,
-      password: values.password,
-      voted: false,
-    };
-    
-    addnewVoterApi(voter)
-      .then(() => {
-        navigate("/admin/voter-list");
+  function retrieveVoter() {
+    retrieveVoterApi(id)
+      .then((response) => {
+        const { voterId, name, password, voted } = response.data
+        setVoterdata({voterId,name,password,voted})
       })
       .catch((error) => console.log(error));
   }
 
+  function onSubmit(values) {
+    const voter = {
+      voterId: values.voterId,
+      name: values.name,
+      password: values.password,
+      voted: values.voted,
+    };
+
+    // Update voter
+    if (id !== "-1") {
+      updateVoterApi(id, voter)
+        .then((response) => {
+          navigate("/admin/voter-list"); // Navigate to voter list after updating
+        })
+        .catch((error) => console.log(error));
+    } else {
+      // Create new voter
+      addnewVoterApi(voter)
+        .then((response) => {
+          navigate("/admin/voter-list"); // Navigate to voter list after adding new voter
+        })
+        .catch((error) => console.log(error));
+    }
+  }
+  
+  
   function validate(values) {
     let error = {};
     if (values.voterId < 1000) error.voterId = "Enter the integer after 1000";
     if (!values.password) error.password = "enter valid password";
     if (!values.name) error.name = "enter valid name";
 
-    console.log(values);
+    console.log(values," -For validateion");
     return error;
   }
 
   return (
     <div className="container">
-      <h2>Enter Voter details</h2>
+      <h2 className="heading">Enter Voter details</h2>
 
       <div>
         <Formik
-          initialValues={{ voterId, name, password }}
+          initialValues={voterdata}
           enableReinitialize={true}
           onSubmit={onSubmit}
           validate={validate}
@@ -70,7 +84,7 @@ export default function VoterComponent() {
           {(props) => (
             <Form>
               <ErrorMessage
-                voterId="voterId"
+                name="voterId"
                 component="div"
                 className="alert alert-warning"
               />
@@ -81,7 +95,7 @@ export default function VoterComponent() {
                 className="alert alert-warning"
               />
               <ErrorMessage
-                password="password"
+                name="password"
                 component="div"
                 className="alert alert-warning"
               />

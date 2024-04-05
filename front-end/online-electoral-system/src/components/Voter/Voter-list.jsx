@@ -37,7 +37,13 @@ const VoterListComponent = () => {
   //add new Voter
   function addVoter() {
     console.log("add new -clicked");
-    navigate("/admin/voter");
+    navigate("/admin/voter/-1");
+  }
+
+  //update voter
+  function updateVoter(id) {
+    console.log('cliked on update button')
+    navigate(`/admin/voter/${id}`)
   }
 
   return (
@@ -96,7 +102,7 @@ const VoterListComponent = () => {
                   <td className="space-x-6 w-[20%]">
                     <button
                       className="text-black bg-teal-600 px-4 py-1 rounded hover:bg-teal-700"
-                      //onClick={() => updateVoter(voter.voterId)}
+                      onClick={() => updateVoter(voter.id)}
                     >
                       <FiEdit color="#fff" />
                     </button>
