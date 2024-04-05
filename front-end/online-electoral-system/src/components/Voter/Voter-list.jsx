@@ -50,9 +50,9 @@ const VoterListComponent = () => {
     <div className="overflow-x-auto px-8 py-8">
       <div className="flex justify-between mb-4">
         <div>
-          <h1>Voter list</h1>
+          <h1 className="heading">Voter list</h1>
         </div>
-        
+
         <div>
           <button
             className=" bg-teal-500 px-4 py-1 rounded hover:bg-teal-600 text-white"

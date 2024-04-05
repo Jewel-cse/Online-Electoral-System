@@ -1,24 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import { retrieveAllCandidateApi } from "../../api/CandidateApiService";
+import { retrieveCandidateApi } from "../../api/votingApiService";
+import { useNavigate } from "react-router-dom";
 
-const Ballot = () => {
-  // Sample data of candidates
-  const candidates = [
-    { name: "Candidate 1", symbol: "Symbol 1" },
-    { name: "Candidate 2", symbol: "Symbol 2" },
-    { name: "Candidate 3", symbol: "Symbol 3" },
-    // Add more candidates as needed
-  ];
+const Ballot = ({ positionId, voterId }) => {
+  const [candidates, setCandidates] = useState([]);
+  const navigate = useNavigate();
 
-  const handleVoteClick = (candidateName) => {
-    // Handle vote submission logic here
-    console.log(`Voted for ${candidateName}`);
+  useEffect(() => {
+    refreshCandidates();
+  }, [positionId]);
+
+  function refreshCandidates() {
+    retrieveAllCandidateApi(positionId)
+      .then((response) => {
+        setCandidates(response.data);
+      })
+      .catch((error) => console.log(error));
+  }
+
+  const handleVoteClick = (symbol) => {
+    console.log(`Voted for ${symbol}`);
+    retrieveCandidateApi(voterId, positionId, symbol)
+      .then(() => {
+        navigate("/user/voting-interface");
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
     <div className="container">
-      <h1 className="text-center my-4" style={{fontSize:'40px'}} >President Election</h1>
+      <h1 className="text-center my-4" style={{ fontSize: "40px"}}>
+        {positionId} Election
+      </h1>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -35,7 +51,7 @@ const Ballot = () => {
               <td style={{ textAlign: "center" }}>
                 <Button
                   variant="info"
-                  onClick={() => handleVoteClick(candidate.name)}
+                  onClick={() => handleVoteClick(candidate.symbol)}
                   style={{ color: "black" }}
                 >
                   Do Vote

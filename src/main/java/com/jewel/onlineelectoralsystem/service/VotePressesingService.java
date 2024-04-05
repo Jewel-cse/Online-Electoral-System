@@ -58,9 +58,6 @@ public class VotePressesingService {
         VoteRecord voteRecord = voteTrackRepo.findByVoterId(voterId).orElse(null);
         Voter voter = voterRepository.findByVoterId(voterId).orElse(null);
 
-        System.out.println(existingVoteCount);
-        System.out.println(voteRecord);
-        System.out.println(voter);
         if(existingVoteCount == null || voteRecord == null || voter == null)
             return;
 

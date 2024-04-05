@@ -9,10 +9,9 @@ function HomeComponent() {
   return (
     <div className="px-2 py-1">
       <div>
-        <HeaderComponent />
+        <HeaderComponent/>
         <HeroComponent />
         <DemoComponent/>
-        {/* <FooterComponent /> */}
       </div>
     </div>
   );

@@ -1,9 +1,15 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-
+import{useNavigate} from "react-router-dom"
 
 export default function AdminLayout({ children }) {
   const positionId = 'president'
+
+  const navigate = useNavigate()
+  function exit() {
+    console.log("exit from admin panel")
+    navigate("/#")
+  }
   return (
     <div className="flex h-screen">
       {/* Left Side */}
@@ -48,7 +54,7 @@ export default function AdminLayout({ children }) {
             </h2>
           </div>
           <div>
-            <button className="text-black bg-red-400 px-4 py-1 rounded hover:bg-red-600">
+            <button className="text-black bg-red-400 px-4 py-1 rounded hover:bg-red-600" onClick={exit}>
               logout
             </button>
           </div>

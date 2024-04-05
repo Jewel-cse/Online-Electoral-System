@@ -26,6 +26,11 @@ public class CandidateController {
         return candidateRepository.findByPositionId(positionId);
     }
 
+    @GetMapping("api/candidates/id/{id}")
+    public Candidate getCandidate(@PathVariable Integer id){
+        return candidateRepository.findById(id).orElse(null);
+    }
+
     //delete a candidate
     @DeleteMapping("api/candidates/{id}")
     public void removeACandidate(@PathVariable Integer id){
@@ -36,7 +41,6 @@ public class CandidateController {
     @PostMapping ("api/candidates")
     public Candidate addCandidate(@RequestBody Candidate candidate){
         if(!candidateService.isDuplicateCandidateIsAdded(candidate.getSymbol(),candidate.getPositionId())){
-            System.out.println("Hello candidate is posting.........");
             votePressesingService.initializeVoteForCandidate(candidate.getPositionId(),candidate.getSymbol());
             return candidateRepository.save(candidate);
         }
@@ -44,17 +48,16 @@ public class CandidateController {
     }
 
     //Update a candidate
-    @PutMapping("/api/candidates")
-    public Candidate updateCandidate(@RequestBody Candidate candidate){
+    @PutMapping("/api/candidates/{id}")
+    public Candidate updateCandidate(@PathVariable Integer id,@RequestBody Candidate candidate){
+        Candidate temp = candidateRepository.findById(id).orElse(null);
+        candidateRepository.delete(temp);
         if(!candidateService.isDuplicateCandidateIsAdded(candidate.getSymbol(),candidate.getPositionId())){
-            //find existing -> delete it -> post updated candidate with initialization vote-cast
-            Candidate temp = candidateRepository.findById(candidate.getId()).get();
-
-            candidateRepository.delete(temp);
 
             votePressesingService.initializeVoteForCandidate(candidate.getPositionId(),candidate.getSymbol());
             return  candidateRepository.save(candidate);
         }
-        return null;
+
+        return candidateRepository.save(temp);
     }
 }

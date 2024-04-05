@@ -20,6 +20,7 @@ import CandidateDashboard from "./components/candidate/CandidateDashboard";
 export default function App() {
   return (
     <BrowserRouter>
+      {/* <HeaderComponent/> */}
       <Routes>
         <Route index element={<HomeComponent />} />
         {/* Inside admin panel */}
@@ -35,10 +36,11 @@ export default function App() {
 
         {/* vote inter face */}
         <Route path="/user/voting-interface" element={<VotineInterface />} />
-        <Route path="/user/voting-interface/Ballot" element={<Ballot />} />
+        {/* <Route path="/user/voting-interface/Ballot" element={<Ballot />} /> */}
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {/* <FooterComponent/> */}
     </BrowserRouter>
   );
 }

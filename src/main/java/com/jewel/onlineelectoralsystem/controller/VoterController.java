@@ -28,9 +28,13 @@ public class VoterController {
     public ResponseEntity<List<Voter>> getVoterList(){
         return new ResponseEntity<>(voterRepository.findAll(), HttpStatus.OK);
     }
-    @GetMapping("/api/voters/{voterId}")
+    @GetMapping("/api/voters/voter-id/{voterId}")
     public Optional<Voter> getVoterByVoterId(@PathVariable Integer voterId){
         return  voterRepository.findByVoterId(voterId);
+    }
+    @GetMapping("api/voters/{id}")
+    public Voter getVotersById(@PathVariable Integer id){
+        return voterRepository.findById(id).orElse(null);
     }
     //2: post voter
     @PostMapping("/api/voters")
@@ -46,16 +50,14 @@ public class VoterController {
     //3: delete voter
     @DeleteMapping("/api/voters/{voterId}")
     public void removeVoter(@PathVariable Integer voterId){
-        //System.out.println("voter id is : "+voterId);
         Voter tempVoter = voterRepository.findByVoterId(voterId).get();
         voterRepository.delete(tempVoter);
     }
 
     //4: update a voter info
-    @PatchMapping ("/api/voters/{voterId}")
-    public Voter updateVoterInfo(@RequestBody Voter voter,@PathVariable Integer voterId){
-        Voter tempVoter = voterRepository.findByVoterId(voterId).get();
-
+    @PatchMapping ("/api/voters/{id}")
+    public Voter updateVoterInfo(@RequestBody Voter voter,@PathVariable Integer id){
+        Voter tempVoter = voterRepository.findById(id).orElse(null);
         //voterRepository.delete(tempVoter);
         tempVoter.setName(voter.getName());
         tempVoter.setPassword(voter.getPassword());

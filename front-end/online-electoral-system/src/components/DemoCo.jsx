@@ -1,6 +1,11 @@
+
+import {useNavigate} from "react-router-dom"
 const DemoComponent = () => {
+  const navigate = useNavigate()
+
   function handleClick() {
-    alert("gets started...");
+    //alert("gets started...");
+    navigate("/user/voting-interface");
   }
   return (
     <>
