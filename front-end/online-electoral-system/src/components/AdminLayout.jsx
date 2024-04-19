@@ -11,7 +11,7 @@ export default function AdminLayout({ children }) {
     navigate("/#")
   }
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       {/* Left Side */}
       <div className="bg-gray-200 w-[20%] p-8  gap-20">
         <div className="text-blue-900 content-center p-4 text-center">JT</div>

@@ -51,7 +51,7 @@ const CandidateList = () => {
     <div className="overflow-x-auto px-8 py-8">
       <div className="flex justify-between mb-4">
         <div>
-          <h1 className="heading">Candidate list</h1>
+          <h1 className="heading">{positionId} list</h1>
         </div>
         <div>
           {deleteMessage && <h2 style={{color:"red"}}>{ deleteMessage}</h2>}

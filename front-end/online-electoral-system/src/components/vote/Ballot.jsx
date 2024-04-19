@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { retrieveAllCandidateApi } from "../../api/CandidateApiService";
-import { retrieveCandidateApi } from "../../api/votingApiService";
+import { processVote, retrieveCandidateApi } from "../../api/votingApiService";
 import { useNavigate } from "react-router-dom";
 
 const Ballot = ({ positionId, voterId }) => {
@@ -23,7 +23,14 @@ const Ballot = ({ positionId, voterId }) => {
 
   const handleVoteClick = (symbol) => {
     console.log(`Voted for ${symbol}`);
-    retrieveCandidateApi(voterId, positionId, symbol)
+    //retrieveCandidateApi(voterId, positionId, symbol)
+      const voteData = {
+        voterId: voterId,
+        positionId: positionId,
+        symbol: symbol,
+      };
+
+    processVote(voteData)
       .then(() => {
         navigate("/user/voting-interface");
       })

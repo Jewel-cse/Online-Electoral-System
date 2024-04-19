@@ -16,6 +16,7 @@ import Ballot from "./components/vote/Ballot";
 import CandidateList from "./components/candidate/Candidate-list";
 import Candidate from "./components/candidate/Candidate";
 import CandidateDashboard from "./components/candidate/CandidateDashboard";
+import ResultComponent from "./components/result/Result";
 
 export default function App() {
   return (
@@ -27,11 +28,14 @@ export default function App() {
         <Route path="/admin" element={<AdminLayout />}>
           {/* voter operation */}
           <Route path="voter-list" element={<VoterListComponent />} />
-          <Route path="voter/:id" element={<VoterComponent/>} />
+          <Route path="voter/:id" element={<VoterComponent />} />
           {/* candidateoperation */}
-          <Route path="candidate-dashboard" element = {<CandidateDashboard/>}/>
+          <Route path="candidate-dashboard" element={<CandidateDashboard />} />
           <Route path="candidates/:positionId" element={<CandidateList />} />
           <Route path="candidate/id/:id" element={<Candidate />} />
+
+          {/* result showing */}
+          <Route path="election-result" element={<ResultComponent/>} />
         </Route>
 
         {/* vote inter face */}
