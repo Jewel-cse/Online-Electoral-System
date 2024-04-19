@@ -13,4 +13,10 @@ public class VoteProcess {
     public void castingVoteOfSpecificPosition(@PathVariable Integer voterId,@PathVariable String positionId,@PathVariable String symbol){
         votePressesingService.processVote(voterId,positionId,symbol);
     }
+
+    @PostMapping("api/cast-vote")
+    public void castVote(@RequestBody VoteData voteData){
+        votePressesingService.processVote(voteData.voterId(),voteData.positionId(),voteData.symbol());
+    }
+    public record VoteData(Integer voterId,String positionId,String symbol){}
 }
