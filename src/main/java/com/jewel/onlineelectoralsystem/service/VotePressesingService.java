@@ -1,5 +1,6 @@
 package com.jewel.onlineelectoralsystem.service;
 
+import com.jewel.onlineelectoralsystem.dto.ReqRes;
 import com.jewel.onlineelectoralsystem.model.VoteCount;
 import com.jewel.onlineelectoralsystem.model.VoteRecord;
 import com.jewel.onlineelectoralsystem.model.Voter;
@@ -52,21 +53,32 @@ public class VotePressesingService {
         }
         return false;
     }
-    public void processVote(Integer voterId,String positionId,String symbol){
+    public ReqRes processVote(Integer voterId,String positionId,String symbol){
+
+        ReqRes response = new ReqRes();
+
         //voterId->symbol: isVoted- true, and number of vote++;
         VoteCount existingVoteCount = voteCountRepository.findById(new VoteCountKey(positionId,symbol)).orElse(null);
         VoteRecord voteRecord = voteTrackRepo.findByVoterId(voterId).orElse(null);
         Voter voter = voterRepository.findByVoterId(voterId).orElse(null);
 
-        if(existingVoteCount == null || voteRecord == null || voter == null)
-            return;
+        if(existingVoteCount == null || voteRecord == null || voter == null){
+            response.setStatusCode(400);
+            response.setMessage("Bad request");
+            return response;
+        }
 
         if(!voter.isVoted() && !isAlreadyVotedForPosition(voterId,positionId)){
 
-             // increament vote
+             // increment vote
              int count = existingVoteCount.getNumberOfVote();
              existingVoteCount.setNumberOfVote(count+1);
              voteCountRepository.save(existingVoteCount);
+
+             response.setNumberOfVote(count+1);
+             response.setVoterId(voterId.toString());
+             response.setPositionId(positionId);
+             response.setSymbol(symbol);
 
             //check position id and make vote for particular position and save
 
@@ -84,6 +96,10 @@ public class VotePressesingService {
         && voteRecord.isCastMPVote() && voteRecord.isCastPresidentVote()){
             voter.setVoted(true);
             voterRepository.save(voter);
+            response.setVoted(true);
         }
+        response.setStatusCode(200);
+        response.setMessage("In " + response.getPositionId() + "-election, voter "+response.getVoterId()+" pick -"+ response.getSymbol());
+        return response;
     }
 }

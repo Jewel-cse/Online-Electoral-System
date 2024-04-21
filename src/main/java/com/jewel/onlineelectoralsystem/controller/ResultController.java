@@ -22,19 +22,14 @@ public class ResultController {
 
     @Autowired
     private WinnerService winnerService;
-    @GetMapping("/api/election-result/{positionId}")
-    public ResponseEntity<List<VoteCount>> getResult(@PathVariable String positionId){
-        Result res = new Result(electionResultService.getTotalCastPresidentVote()
-                , electionResultService.getTotalCastMPVote()
-                , electionResultService.getTotalCastChairmanVote()
-                , electionResultService.getTotalCastMemberVote());
-        System.out.println(res.toString());
-        return new ResponseEntity<List<VoteCount>>(electionResultService.getResult(positionId), HttpStatus.OK);
+    @GetMapping("/api/v1/election-result/{positionId}")
+    public ResponseEntity<Object> getResult(@PathVariable String positionId){
+        return ResponseEntity.ok(electionResultService.getResult(positionId));
     }
 
-    @GetMapping("/api/election-winners")
-    public ResponseEntity<List<Winner>> getWinners(){
+    @GetMapping("/api/v1/election-winners")
+    public ResponseEntity<Object> getWinners(){
         winnerService.storeAllWinner();
-        return new ResponseEntity<List<Winner>>(winnerService.getAllWinner(), HttpStatus.OK);
+        return ResponseEntity.ok(winnerService.getAllWinner());
     }
 }

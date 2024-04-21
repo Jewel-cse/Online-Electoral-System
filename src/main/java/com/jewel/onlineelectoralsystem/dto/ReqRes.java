@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jewel.onlineelectoralsystem.model.Candidate;
 import com.jewel.onlineelectoralsystem.model.OurUsers;
+import com.jewel.onlineelectoralsystem.model.VoteCount;
 import com.jewel.onlineelectoralsystem.model.Voter;
 
 import java.util.List;
@@ -36,6 +37,8 @@ public class ReqRes {
 
     private List<Candidate> candidates;
 
+
+    private List<VoteCount> voteCounts;
     private OurUsers ourUsers;
 
     public int getStatusCode() {
@@ -196,5 +199,12 @@ public class ReqRes {
 
     public void setOurUsers(OurUsers ourUsers) {
         this.ourUsers = ourUsers;
+    }
+    public List<VoteCount> getVoteCounts() {
+        return voteCounts;
+    }
+
+    public void setVoteCounts(List<VoteCount> voteCounts) {
+        this.voteCounts = voteCounts;
     }
 }

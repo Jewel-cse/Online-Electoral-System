@@ -1,5 +1,6 @@
 package com.jewel.onlineelectoralsystem.service;
 
+import com.jewel.onlineelectoralsystem.dto.ReqRes;
 import com.jewel.onlineelectoralsystem.model.VoteCount;
 import com.jewel.onlineelectoralsystem.repository.VoteCountRepository;
 import com.jewel.onlineelectoralsystem.repository.VoteTrackRepo;
@@ -75,6 +76,6 @@ public class ElectionResultService {
 
     //give the VoteCount : positionId, symbol, number of vote for a specific positionId.
     public List<VoteCount> getResult(String positionId){
-        return voteCountRepository.findByIdPositionId(positionId).orElse(null);
+        return  voteCountRepository.findByIdPositionId(positionId).orElse(null);
     }
 }

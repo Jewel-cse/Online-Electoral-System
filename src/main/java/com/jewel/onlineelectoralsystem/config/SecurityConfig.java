@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
@@ -33,9 +34,10 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request->request.requestMatchers("/auth/**","/public/**").permitAll()
+
                                 .requestMatchers("/api/v1/admin/candidates/**").hasAnyAuthority("ADMIN")
                                 .requestMatchers("/api/v1/voters/**").hasAnyAuthority("ADMIN")
-                                .requestMatchers("/api/v1/admin-voter/**").hasAnyAuthority("USER","ADMIN")
+                                .requestMatchers("/api/v1/**/**").hasAnyAuthority("USER","ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager ->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
