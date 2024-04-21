@@ -1,63 +1,44 @@
 package com.jewel.onlineelectoralsystem.controller;
 
-import com.jewel.onlineelectoralsystem.model.Candidate;
-import com.jewel.onlineelectoralsystem.repository.CandidateRepository;
-import com.jewel.onlineelectoralsystem.service.CandidateService;
-import com.jewel.onlineelectoralsystem.service.VotePressesingService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.jewel.onlineelectoralsystem.dto.ReqRes;
 
-import java.util.List;
+import com.jewel.onlineelectoralsystem.service.CandidateService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CandidateController {
 
     @Autowired
-    private CandidateRepository candidateRepository;
-
-    @Autowired
     private CandidateService candidateService;
-    @Autowired
-    VotePressesingService votePressesingService;
 
     //get all the candidate by position id
-    @GetMapping("api/candidates/{positionId}")
-    public List<Candidate> getAllCandidate(@PathVariable String positionId){
-        return candidateRepository.findByPositionId(positionId);
+    @GetMapping("api/v1/admin/candidates/{positionId}")
+    public ResponseEntity<Object> getAllCandidate(@PathVariable String positionId){
+        return ResponseEntity.ok(candidateService.getCandidate(positionId)) ;
     }
 
-    @GetMapping("api/candidates/id/{id}")
-    public Candidate getCandidate(@PathVariable Integer id){
-        return candidateRepository.findById(id).orElse(null);
-    }
+//    @GetMapping("api/v1/admin/candidates/id/{id}")
+//    public ResponseEntity<Object> getCandidate(@PathVariable Integer id){
+//        return ResponseEntity.ok(candidateRepository.findById(id).orElse(null));
+//    }
 
     //delete a candidate
-    @DeleteMapping("api/candidates/{id}")
-    public void removeACandidate(@PathVariable Integer id){
-        candidateRepository.deleteById(id);
+    @DeleteMapping("api/v1/admin/candidates/{id}")
+    public ResponseEntity<Object> removeACandidate(@PathVariable Integer id){
+        return ResponseEntity.ok(candidateService.deleteCandidate(id));
     }
 
     //add a candidate
-    @PostMapping ("api/candidates")
-    public Candidate addCandidate(@RequestBody Candidate candidate){
-        if(!candidateService.isDuplicateCandidateIsAdded(candidate.getSymbol(),candidate.getPositionId())){
-            votePressesingService.initializeVoteForCandidate(candidate.getPositionId(),candidate.getSymbol());
-            return candidateRepository.save(candidate);
-        }
-        return null;
+    @PostMapping ("api/v1/admin/candidates")
+    public ResponseEntity<Object> addCandidate(@RequestBody ReqRes candidateRequest){
+        return  ResponseEntity.ok(candidateService.postCandidate(candidateRequest));
     }
 
     //Update a candidate
-    @PutMapping("/api/candidates/{id}")
-    public Candidate updateCandidate(@PathVariable Integer id,@RequestBody Candidate candidate){
-        Candidate temp = candidateRepository.findById(id).orElse(null);
-        candidateRepository.delete(temp);
-        if(!candidateService.isDuplicateCandidateIsAdded(candidate.getSymbol(),candidate.getPositionId())){
-
-            votePressesingService.initializeVoteForCandidate(candidate.getPositionId(),candidate.getSymbol());
-            return  candidateRepository.save(candidate);
-        }
-
-        return candidateRepository.save(temp);
+    @PutMapping("/api/v1/admin/candidates/{id}")
+    public ResponseEntity<Object> updateCandidate(@PathVariable Integer id,@RequestBody ReqRes candidateRequest){
+        return ResponseEntity.ok(candidateService.updateCandidate(id,candidateRequest));
     }
 }
