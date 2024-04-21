@@ -1,7 +1,9 @@
 package com.jewel.onlineelectoralsystem.service;
 
 import com.jewel.onlineelectoralsystem.dto.ReqRes;
+import com.jewel.onlineelectoralsystem.model.VoteRecord;
 import com.jewel.onlineelectoralsystem.model.Voter;
+import com.jewel.onlineelectoralsystem.repository.VoteTrackRepo;
 import com.jewel.onlineelectoralsystem.repository.VoterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ public class VoterService {
     @Autowired
     private VoterRepository voterRepository;
 
+    @Autowired
+    private VoteTrackRepo voteTrackRepo;
     @Autowired
     private VotePressesingService votePressesingService;
 
@@ -83,11 +87,12 @@ public class VoterService {
         ReqRes response = new ReqRes();
         try{
             Voter delVoter = voterRepository.findByVoterId(voterId).orElse(null);
+            VoteRecord voteRecord = voteTrackRepo.findByVoterId(voterId).orElse(null);
             if(delVoter != null){
                 voterRepository.delete(delVoter);
+                voteTrackRepo.delete(voteRecord);
                 response.setMessage("Successfully Delete the voter");
                 response.setStatusCode(200);
-
             }else{
                 response.setMessage("Not exists the voter");
                 response.setStatusCode(404);

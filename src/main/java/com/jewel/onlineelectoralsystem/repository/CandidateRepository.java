@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate,Integer> {
     List<Candidate> findByPositionId(String positionId);
-    Optional<Candidate> findBySymbol(String symbol);
+
 }

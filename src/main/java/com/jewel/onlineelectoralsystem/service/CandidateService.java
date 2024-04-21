@@ -50,9 +50,17 @@ public class CandidateService {
     //############ Update candidate service ########
     public ReqRes updateCandidate(Integer id,ReqRes CandidateRequest){
 
-        Candidate temp = candidateRepository.findById(id).orElse(null);
-        candidateRepository.delete(temp);
-        ReqRes response = postCandidate(CandidateRequest);
+        ReqRes response = new ReqRes();
+
+        Candidate candidateToUpdate = candidateRepository.findById(id).orElse(null);
+        if(candidateToUpdate == null){
+            response.setMessage("Not exists candidates");
+            response.setStatusCode(409);
+            return response;
+        }
+        candidateRepository.delete(candidateToUpdate);
+        voteCountRepository.deleteById(new VoteCountKey(candidateToUpdate.getPositionId(),candidateToUpdate.getSymbol()));
+        response = postCandidate(CandidateRequest);
 
         if(response.getStatusCode() == 200){
             response.setMessage("Successfully updated the candidate");
@@ -64,9 +72,17 @@ public class CandidateService {
     public ReqRes deleteCandidate(Integer id){
         ReqRes response = new ReqRes();
         try{
-            candidateRepository.deleteById(id);
-            response.setMessage("Successfully Delete the candidate");
-            response.setStatusCode(200);
+            Candidate candidateToDelete = candidateRepository.findById(id).orElse(null);
+            if(candidateToDelete !=null){
+                candidateRepository.delete(candidateToDelete);
+                voteCountRepository.deleteById(new VoteCountKey(candidateToDelete.getPositionId(),candidateToDelete.getSymbol()));
+                response.setMessage("Successfully Delete the candidate");
+                response.setStatusCode(200);
+            }else{
+                response.setStatusCode(409);
+                response.setMessage("Not exist candidate");
+            }
+
         }catch (Exception e){
             response.setStatusCode(500);
             response.setError(e.getMessage());

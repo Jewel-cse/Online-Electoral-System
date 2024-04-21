@@ -37,7 +37,7 @@ public class SecurityConfig {
 
                                 .requestMatchers("/api/v1/admin/candidates/**").hasAnyAuthority("ADMIN")
                                 .requestMatchers("/api/v1/voters/**").hasAnyAuthority("ADMIN")
-                                .requestMatchers("/api/v1/**/**").hasAnyAuthority("USER","ADMIN")
+                                .requestMatchers("/api/v1/**").hasAnyAuthority("USER","ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager ->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

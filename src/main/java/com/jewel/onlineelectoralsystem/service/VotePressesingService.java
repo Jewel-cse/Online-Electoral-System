@@ -79,6 +79,9 @@ public class VotePressesingService {
              response.setVoterId(voterId.toString());
              response.setPositionId(positionId);
              response.setSymbol(symbol);
+             response.setStatusCode(200);
+            //response.setMessage("In " + response.getPositionId() + "-election, voter "+response.getVoterId()+" pick -"+ response.getSymbol());
+            response.setMessage("successfully cast vote");
 
             //check position id and make vote for particular position and save
 
@@ -90,6 +93,9 @@ public class VotePressesingService {
                 default:
                     System.out.println("you select invalid position id");break;
             }
+        }else{
+            response.setStatusCode(409);
+            response.setMessage("Already voted for this position");
         }
         //make voter.voted if all vote are completed
         if(voteRecord.isCastChairmanVote() && voteRecord.isCastMemberVote()
@@ -98,8 +104,6 @@ public class VotePressesingService {
             voterRepository.save(voter);
             response.setVoted(true);
         }
-        response.setStatusCode(200);
-        response.setMessage("In " + response.getPositionId() + "-election, voter "+response.getVoterId()+" pick -"+ response.getSymbol());
         return response;
     }
 }
