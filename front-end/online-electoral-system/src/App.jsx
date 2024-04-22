@@ -18,6 +18,7 @@ import Candidate from "./components/candidate/Candidate";
 import CandidateDashboard from "./components/candidate/CandidateDashboard";
 import ResultComponent from "./components/result/Result";
 import AuthProvider, { useAuth } from "./security/AuthContext";
+import  LoginComponent  from "./components/Login";
 
 
 export default function App() {
@@ -36,6 +37,7 @@ export default function App() {
           {/* <HeaderComponent/> */}
           <Routes>
             <Route index element={<HomeComponent />} />
+            <Route path="/login" element={<LoginComponent/>} />
             {/* Inside admin panel */}
             <Route path="/admin" element={<AdminLayout />}>
               {/* voter operation */}

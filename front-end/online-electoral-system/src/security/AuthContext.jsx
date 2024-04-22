@@ -7,24 +7,44 @@ export const useAuth = () => useContext(AuthContext);
  export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
+  // Check if user is authenticated on component mount
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000; 
+      if (decoded.exp && decoded.exp < currentTime) {
+        setUser(null);
+        localStorage.removeItem("jwt");
+      } else {
+        setUser(decoded);
+      }
+    }
+  }, []);
+
   // Function to login with JWT
-  async function signIn(username, password) {
+  async function login(voterId, password) {
     try {
       const response = await fetch("http://localhost:8080/auth/sign-in", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ voterId: username, password }),
+        body: JSON.stringify({voterId, password })
       });
     
       if (!response.ok) {
         throw new Error("Invalid credentials");
       }
     
-      const { token } =  response.json();
+      const responseData = await response.json(); 
+      //console.log(responseData)
+      const { token } = responseData; // Destructure token from responseData
+  
+      //console.log("Received token:", token); 
+  
       const decoded = jwtDecode(token);
-    
+  
       setUser(decoded);
       localStorage.setItem("jwt", token);
       return true;
@@ -35,14 +55,14 @@ export const useAuth = () => useContext(AuthContext);
   }
 
   // Function to sign up
-  async function signUp(username, password) {
+  async function signUp(voterId, password) {
     try {
       const response = await fetch("http://localhost:8080/auth/sign-up", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ voterId: username, password }),
+        body: JSON.stringify({ voterId, password })
       });
 
       if (!response.ok) {
@@ -59,28 +79,14 @@ export const useAuth = () => useContext(AuthContext);
 
   // Function to logout
   function logout() {
-    console.log('logout')
+    //console.log('logout')
     setUser(null);
     localStorage.removeItem("jwt"); // Remove token from localStorage on logout
   }
 
-  // Check if user is authenticated on component mount
-  useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    if (token) {
-      const decoded = jwtDecode(token);
-      const currentTime = Date.now() / 1000; 
-      if (decoded.exp && decoded.exp < currentTime) {
-        setUser(null);
-        localStorage.removeItem("jwt");
-      } else {
-        setUser(decoded);
-      }
-    }
-  }, []);
-
+  
   return (
-    <AuthContext.Provider value={{ user, signIn, signUp, logout }}>
+    <AuthContext.Provider value={{ user, login, signUp, logout }}>
       {children}
     </AuthContext.Provider>
   );

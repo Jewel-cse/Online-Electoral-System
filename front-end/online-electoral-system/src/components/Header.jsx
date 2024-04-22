@@ -41,7 +41,7 @@ const HeaderComponent = () => {
             
           </li>
           <li>
-            <Link className="nav-link" to="#">login</Link>
+            <Link className="nav-link" to="/login">login</Link>
           </li>
         </ul>
       </nav>
