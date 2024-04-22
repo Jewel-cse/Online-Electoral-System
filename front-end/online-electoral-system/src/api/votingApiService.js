@@ -7,5 +7,5 @@ export const retrieveCandidateApi = (voterId,positionId,symbol) => {
 
 //cast vote using post method =>voteData(voterId,positionId,symbol)
 export const processVote = (voteData) => {
-  return apiClient.post("api/cast-vote", voteData);
+  return apiClient.post("api/v1/cast-vote", voteData);
 };

@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../security/AuthContext";
 
 const HeaderComponent = () => {
+  const {logout} = useAuth()
+
   return (
     <header>
       <h1 className="text-black text-3xl text-center pt-8">
@@ -30,9 +33,11 @@ const HeaderComponent = () => {
         </ul>
         <ul className="flex gap-12">
           <li>
-            <Link className="nav-link" to="#">
+            <span className="nav-link"
+              onClick={logout}
+            >
               logout
-            </Link>
+            </span>
             
           </li>
           <li>

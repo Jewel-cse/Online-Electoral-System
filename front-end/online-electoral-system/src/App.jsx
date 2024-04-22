@@ -17,34 +17,49 @@ import CandidateList from "./components/candidate/Candidate-list";
 import Candidate from "./components/candidate/Candidate";
 import CandidateDashboard from "./components/candidate/CandidateDashboard";
 import ResultComponent from "./components/result/Result";
+import AuthProvider, { useAuth } from "./security/AuthContext";
+
 
 export default function App() {
+  function AuthenticatedRoute({ children }) {
+    const authContext = useAuth();
+    if (authContext.user) {
+      return children;
+    }
+    return <Navigate to="/" />;
+  }
   return (
-    <BrowserRouter>
-      {/* <HeaderComponent/> */}
-      <Routes>
-        <Route index element={<HomeComponent />} />
-        {/* Inside admin panel */}
-        <Route path="/admin" element={<AdminLayout />}>
-          {/* voter operation */}
-          <Route path="voter-list" element={<VoterListComponent />} />
-          <Route path="voter/:id" element={<VoterComponent />} />
-          {/* candidateoperation */}
-          <Route path="candidate-dashboard" element={<CandidateDashboard />} />
-          <Route path="candidates/:positionId" element={<CandidateList />} />
-          <Route path="candidate/id/:id" element={<Candidate />} />
 
-          {/* result showing */}
-          <Route path="election-result" element={<ResultComponent/>} />
-        </Route>
+    <div>
+      <AuthProvider>
+        <BrowserRouter>
+          {/* <HeaderComponent/> */}
+          <Routes>
+            <Route index element={<HomeComponent />} />
+            {/* Inside admin panel */}
+            <Route path="/admin" element={<AdminLayout />}>
+              {/* voter operation */}
+              <Route path="voter-list" element={<VoterListComponent />} />
+              <Route path="voter/:id" element={<VoterComponent />} />
+              {/* candidateoperation */}
+              <Route path="candidate-dashboard" element={<CandidateDashboard />} />
+              <Route path="candidates/:positionId" element={<CandidateList />} />
+              <Route path="candidate/id/:id" element={<Candidate />} />
 
-        {/* vote inter face */}
-        <Route path="/user/voting-interface" element={<VotineInterface />} />
-        {/* <Route path="/user/voting-interface/Ballot" element={<Ballot />} /> */}
+              {/* result showing */}
+              <Route path="election-result" element={<ResultComponent/>} />
+            </Route>
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      {/* <FooterComponent/> */}
-    </BrowserRouter>
+            {/* vote inter face */}
+            <Route path="/user/voting-interface" element={<VotineInterface />} />
+            {/* <Route path="/user/voting-interface/Ballot" element={<Ballot />} /> */}
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          {/* <FooterComponent/> */}
+        </BrowserRouter>
+      </AuthProvider>
+    </div>
+
   );
 }

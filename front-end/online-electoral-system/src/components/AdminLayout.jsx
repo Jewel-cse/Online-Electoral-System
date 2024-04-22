@@ -1,9 +1,11 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import{useNavigate} from "react-router-dom"
+import { useAuth } from "../security/AuthContext";
 
 export default function AdminLayout({ children }) {
   const positionId = 'president'
+  const {logout} = useAuth()
 
   const navigate = useNavigate()
   function exit() {
@@ -54,7 +56,7 @@ export default function AdminLayout({ children }) {
             </h2>
           </div>
           <div>
-            <button className="text-black bg-red-400 px-4 py-1 rounded hover:bg-red-600" onClick={exit}>
+            <button className="text-black bg-red-400 px-4 py-1 rounded hover:bg-red-600" onClick={logout}>
               logout
             </button>
           </div>
