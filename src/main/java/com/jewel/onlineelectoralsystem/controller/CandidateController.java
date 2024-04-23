@@ -14,7 +14,7 @@ public class CandidateController {
     private CandidateService candidateService;
 
     //get all the candidate by position id
-    @GetMapping("api/v1/admin/candidates/{positionId}")
+    @GetMapping("api/v1/admin-user/candidates/{positionId}")
     public ResponseEntity<Object> getAllCandidate(@PathVariable String positionId){
         return ResponseEntity.ok(candidateService.getCandidate(positionId)) ;
     }
@@ -25,19 +25,19 @@ public class CandidateController {
 //    }
 
     //delete a candidate
-    @DeleteMapping("api/v1/admin/candidates/{id}")
+    @DeleteMapping("api/v1/secure/admin/candidates/{id}")
     public ResponseEntity<Object> removeACandidate(@PathVariable Integer id){
         return ResponseEntity.ok(candidateService.deleteCandidate(id));
     }
 
     //add a candidate
-    @PostMapping ("api/v1/admin/candidates")
+    @PostMapping ("api/v1/secure/admin/candidates")
     public ResponseEntity<Object> addCandidate(@RequestBody ReqRes candidateRequest){
         return  ResponseEntity.ok(candidateService.postCandidate(candidateRequest));
     }
 
     //Update a candidate
-    @PutMapping("/api/v1/admin/candidates/{id}")
+    @PutMapping("/api/v1/secure/admin/candidates/{id}")
     public ResponseEntity<Object> updateCandidate(@PathVariable Integer id,@RequestBody ReqRes candidateRequest){
         return ResponseEntity.ok(candidateService.updateCandidate(id,candidateRequest));
     }

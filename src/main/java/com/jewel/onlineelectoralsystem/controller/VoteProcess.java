@@ -16,9 +16,12 @@ public class VoteProcess {
 //        votePressesingService.processVote(voterId,positionId,symbol);
 //    }
 
-    @PostMapping("api/v1/cast-vote")
-    public ResponseEntity<Object> castVote(@RequestBody ReqRes voteData){
-        return ResponseEntity.ok(votePressesingService.processVote(Integer.valueOf(voteData.getVoterId()),voteData.getPositionId(),voteData.getSymbol()));
+    @PostMapping("api/v1/cast/cast-vote")
+    public ResponseEntity<Object> castVote(@RequestHeader("Authorization") String authorizationHeader,@RequestBody ReqRes voteData){
+        System.out.println("Authorization header: " + authorizationHeader);
+        voteData.setToken(authorizationHeader.substring(7));
+        System.out.println("ReqRes "+voteData);
+        return ResponseEntity.ok(votePressesingService.processVote(voteData));
     }
     public record VoteData(Integer voterId,String positionId,String symbol){}
 }

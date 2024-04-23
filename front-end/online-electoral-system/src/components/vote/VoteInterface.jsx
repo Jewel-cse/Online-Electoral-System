@@ -5,7 +5,6 @@ import Ballot from "./Ballot";
 import { useState } from "react";
 function VoteInterface() {
   const [positionId, setPositionId] = useState(null);
-  const voterId = 1003;
 
   return (
     <div className="container">
@@ -75,7 +74,7 @@ function VoteInterface() {
             </Card.Body>
           </Card>
         </div>
-        {positionId && <Ballot positionId={positionId} voterId={voterId} />}
+        {positionId && <Ballot positionId={positionId} />}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../security/AuthContext";
 
 const HeaderComponent = () => {
-  const {logout} = useAuth()
+  const { logout } = useAuth();
 
   return (
     <header>
@@ -33,15 +33,14 @@ const HeaderComponent = () => {
         </ul>
         <ul className="flex gap-12">
           <li>
-            <span className="nav-link"
-              onClick={logout}
-            >
+            <Link className="nav-link" to="/#" onClick={logout}>
               logout
-            </span>
-            
+            </Link>
           </li>
           <li>
-            <Link className="nav-link" to="/login">login</Link>
+            <Link className="nav-link" to="/login">
+              login
+            </Link>
           </li>
         </ul>
       </nav>

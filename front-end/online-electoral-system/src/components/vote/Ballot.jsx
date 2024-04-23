@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { retrieveAllCandidateApi } from "../../api/CandidateApiService";
-import { processVote, retrieveCandidateApi } from "../../api/votingApiService";
+import { processVote} from "../../api/votingApiService";
 import { useNavigate } from "react-router-dom";
 
-const Ballot = ({ positionId, voterId }) => {
+const Ballot = ({ positionId }) => {
   const [candidates, setCandidates] = useState([]);
   const navigate = useNavigate();
 
@@ -25,9 +25,8 @@ const Ballot = ({ positionId, voterId }) => {
     console.log(`Voted for ${symbol}`);
     //retrieveCandidateApi(voterId, positionId, symbol)
       const voteData = {
-        voterId: voterId,
         positionId: positionId,
-        symbol: symbol,
+        symbol: symbol
       };
 
     processVote(voteData)

@@ -26,6 +26,11 @@ public class VotePressesingService {
     @Autowired
     VoteTrackRepo voteTrackRepo;
 
+    @Autowired
+    private  JWTUtils jwtUtils;
+
+
+
     //save vote count initializations if any candidate is added/post
     public void initializeVoteForCandidate(String positionId, String symbol ){
         voteCountRepository.save(new VoteCount(new VoteCountKey(positionId,symbol),0));
@@ -53,12 +58,13 @@ public class VotePressesingService {
         }
         return false;
     }
-    public ReqRes processVote(Integer voterId,String positionId,String symbol){
+    public ReqRes processVote(ReqRes voteProcessRequest){
 
         ReqRes response = new ReqRes();
 
+        Integer voterId =Integer.valueOf(jwtUtils.extractUserName(voteProcessRequest.getToken().toString())) ;
         //voterId->symbol: isVoted- true, and number of vote++;
-        VoteCount existingVoteCount = voteCountRepository.findById(new VoteCountKey(positionId,symbol)).orElse(null);
+        VoteCount existingVoteCount = voteCountRepository.findById(new VoteCountKey(voteProcessRequest.getPositionId(),voteProcessRequest.getSymbol())).orElse(null);
         VoteRecord voteRecord = voteTrackRepo.findByVoterId(voterId).orElse(null);
         Voter voter = voterRepository.findByVoterId(voterId).orElse(null);
 
@@ -68,7 +74,7 @@ public class VotePressesingService {
             return response;
         }
 
-        if(!voter.isVoted() && !isAlreadyVotedForPosition(voterId,positionId)){
+        if(!voter.isVoted() && !isAlreadyVotedForPosition(voterId,voteProcessRequest.getPositionId())){
 
              // increment vote
              int count = existingVoteCount.getNumberOfVote();
@@ -77,15 +83,15 @@ public class VotePressesingService {
 
              response.setNumberOfVote(count+1);
              response.setVoterId(voterId.toString());
-             response.setPositionId(positionId);
-             response.setSymbol(symbol);
+             response.setPositionId(voteProcessRequest.getPositionId());
+             response.setSymbol(voteProcessRequest.getSymbol());
              response.setStatusCode(200);
             //response.setMessage("In " + response.getPositionId() + "-election, voter "+response.getVoterId()+" pick -"+ response.getSymbol());
             response.setMessage("successfully cast vote");
 
             //check position id and make vote for particular position and save
 
-            switch (positionId){
+            switch (voteProcessRequest.getPositionId()){
                 case "president": voteRecord.setCastPresidentVote(true);voteTrackRepo.save(voteRecord);break;
                 case "mp": voteRecord.setCastMPVote(true);voteTrackRepo.save(voteRecord);break;
                 case "chairman": voteRecord.setCastChairmanVote(true);voteTrackRepo.save(voteRecord);break;

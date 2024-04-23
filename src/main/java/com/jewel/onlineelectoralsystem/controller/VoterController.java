@@ -13,7 +13,7 @@ public class VoterController {
     private  VoterService voterService;
 
 
-    @GetMapping("/api/v1/voters")
+    @GetMapping("/api/v1/admin-user/voters")
     public ResponseEntity<Object> getVoterList(){
         return  ResponseEntity.ok(voterService.getVoterList());
     }
@@ -22,25 +22,25 @@ public class VoterController {
 //    public Optional<Voter> getVoterByVoterId(@PathVariable Integer voterId){
 //        return  voterRepository.findByVoterId(voterId);
 //    }
-    @GetMapping("api/v1/voters/{id}")
+    @GetMapping("api/v1/admin-user/voters/{id}")
     public ResponseEntity<Object> getVotersById(@PathVariable Integer id){
         return ResponseEntity.ok(voterService.getVoter(id));
     }
 
 
-    @PostMapping("/api/v1/voters")
+    @PostMapping("/api/v1/secure/voters")
     public ResponseEntity<Object>  addVoter(@RequestBody ReqRes voterRequest){
         return ResponseEntity.ok(voterService.postVoter(voterRequest));
     }
 
 
-    @DeleteMapping("/api/v1/voters/{voterId}")
+    @DeleteMapping("/api/v1/secure/voters/{voterId}")
     public ResponseEntity<Object> removeVoter(@PathVariable Integer voterId){
         return ResponseEntity.ok(voterService.deleteVoter(voterId));
     }
 
 
-    @PatchMapping ("/api/v1/voters/{id}")
+    @PatchMapping ("/api/v1/secure/voters/{id}")
     public ResponseEntity<Object> updateVoterInfo(@RequestBody ReqRes voterRequest,@PathVariable Integer id){
         return ResponseEntity.ok(voterService.updateVoter(voterRequest,id));
     }
