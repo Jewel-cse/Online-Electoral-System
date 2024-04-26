@@ -3,7 +3,9 @@ package com.jewel.onlineelectoralsystem.service;
 
 import com.jewel.onlineelectoralsystem.dto.ReqRes;
 import com.jewel.onlineelectoralsystem.model.OurUsers;
+import com.jewel.onlineelectoralsystem.model.RefreshToken;
 import com.jewel.onlineelectoralsystem.repository.OurUserRepo;
+import com.jewel.onlineelectoralsystem.repository.RefreshTokenRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,9 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private RefreshTokenRepo refreshTokenRepo;
 
     public ReqRes signUp(ReqRes registrationRequest){
         ReqRes resp = new ReqRes();
@@ -60,6 +65,12 @@ public class AuthService {
             response.setRefreshToken(refreshToken);
             response.setExpireTime("24Hr");
             response.setMessage("successfully signed In");
+            RefreshToken existingRefreshToken = refreshTokenRepo.findByVoterId(user.getVoterId());
+            if(existingRefreshToken != null) {
+                existingRefreshToken.setRefreshToken(refreshToken);
+                refreshTokenRepo.save(existingRefreshToken);
+            }
+            refreshTokenRepo.save(new RefreshToken(refreshToken,user.getVoterId()));
         }catch (Exception e){
             response.setStatusCode(500);
             response.setError(e.getMessage());
@@ -76,8 +87,9 @@ public class AuthService {
             response.setStatusCode(200);
             response.setToken(jwt);
             response.setRefreshToken(refreshTokenRequest.getToken());
-            response.setExpireTime("24Hr");
+            response.setExpireTime("1 minutes");
             response.setMessage("successfully refreshed token");
+
         }
         else {
             response.setStatusCode(500);
