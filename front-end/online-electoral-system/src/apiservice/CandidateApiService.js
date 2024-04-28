@@ -1,4 +1,4 @@
-import { apiClient } from "./VoterApiService";
+import { apiClient } from "./api";
 
 //get all the candidate for a specific
 export const retrieveAllCandidateApi = (positionId) => {
@@ -6,7 +6,7 @@ export const retrieveAllCandidateApi = (positionId) => {
 };
 
 export const retrieveCandidateApi = (id) => {
-  return apiClient.get(`api/v1/admin/candidates/id/${id}`);
+  return apiClient.get(`api/v1/secure/admin/candidates/id/${id}`);
 }
 
 //post a candidate

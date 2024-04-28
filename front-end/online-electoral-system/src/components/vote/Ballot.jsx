@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import { retrieveAllCandidateApi } from "../../api/CandidateApiService";
-import { processVote} from "../../api/votingApiService";
+import { retrieveAllCandidateApi } from "../../apiservice/CandidateApiService";
+import { processVote} from "../../apiservice/votingApiService";
 import { useNavigate } from "react-router-dom";
 
 const Ballot = ({ positionId }) => {

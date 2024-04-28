@@ -1,4 +1,4 @@
-import { apiClient } from "./VoterApiService";
+import { apiClient } from "./api";
 
 export const retrieveWinnersApi = () => {
     return apiClient.get("/api/v1/election-winners");

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../security/AuthContext";
 
 const HeaderComponent = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   return (
     <header>
@@ -32,16 +32,24 @@ const HeaderComponent = () => {
           </li>
         </ul>
         <ul className="flex gap-12">
+          {user ? (
+            <li>
+              <Link className="nav-link" to="/#" onClick={logout}>
+                logout
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <Link className="nav-link" to="/login">
+                login
+              </Link>
+            </li>
+          )}
           <li>
-            <Link className="nav-link" to="/#" onClick={logout}>
-              logout
-            </Link>
-          </li>
-          <li>
-            <Link className="nav-link" to="/login">
-              login
-            </Link>
-          </li>
+              <Link className="nav-link" to="/sign-up">
+                sign up
+              </Link>
+            </li>
         </ul>
       </nav>
     </header>

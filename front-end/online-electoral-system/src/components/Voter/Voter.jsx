@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ErrorMessage, Field, Formik,Form } from "formik";
-import { addnewVoterApi, retrieveVoterApi, updateVoterApi } from "../../api/VoterApiService";
+import { addnewVoterApi, retrieveVoterApi, updateVoterApi } from "../../apiservice/VoterApiService";
 
 export default function VoterComponent() {
   

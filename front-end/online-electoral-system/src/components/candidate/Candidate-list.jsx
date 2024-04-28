@@ -4,7 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import {
   deleteCandidateApi,
   retrieveAllCandidateApi,
-} from "../../api/CandidateApiService";
+} from "../../apiservice/CandidateApiService";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CandidateList = () => {

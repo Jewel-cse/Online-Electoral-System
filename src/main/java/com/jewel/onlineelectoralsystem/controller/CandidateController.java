@@ -2,6 +2,7 @@ package com.jewel.onlineelectoralsystem.controller;
 
 import com.jewel.onlineelectoralsystem.dto.ReqRes;
 
+import com.jewel.onlineelectoralsystem.model.Candidate;
 import com.jewel.onlineelectoralsystem.service.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,10 @@ public class CandidateController {
         return ResponseEntity.ok(candidateService.getCandidate(positionId)) ;
     }
 
-//    @GetMapping("api/v1/admin/candidates/id/{id}")
-//    public ResponseEntity<Object> getCandidate(@PathVariable Integer id){
-//        return ResponseEntity.ok(candidateRepository.findById(id).orElse(null));
-//    }
+    @GetMapping("api/v1/secure/admin/candidates/id/{id}")
+    public ResponseEntity<Object> getCandidate(@PathVariable Integer id){
+        return ResponseEntity.ok(candidateService.getCandidateById(id));
+    }
 
     //delete a candidate
     @DeleteMapping("api/v1/secure/admin/candidates/{id}")

@@ -1,4 +1,4 @@
-import { apiClient } from "./VoterApiService";
+import { apiClient } from "./api";
 
 //cast vote using get method 
 // export const retrieveCandidateApi = (voterId,positionId,symbol) => {

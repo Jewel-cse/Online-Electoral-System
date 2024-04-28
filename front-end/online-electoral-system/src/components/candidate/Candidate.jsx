@@ -3,7 +3,7 @@ import {
   retrieveCandidateApi,
   createCandidateApi,
   updateCandidateApi,
-} from "../../api/CandidateApiService";
+} from "../../apiservice/CandidateApiService";
 import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 

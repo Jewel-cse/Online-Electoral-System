@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { PieChart, Pie, Sector } from "recharts";
 
-import { retrieveWinnersApi } from "../../api/resultApiService";
+import { retrieveWinnersApi } from "../../apiservice/resultApiService";
 import IndividualResultCompo from "./IndividualResultCompo";
 
 const ResultComponent = () => {

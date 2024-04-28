@@ -6,8 +6,8 @@ import jakarta.persistence.Id;
 import java.util.Date;
 @Entity
 public class RefreshToken {
-    @Id
     private String refreshToken;
+    @Id
     private String voterId;
 
     public RefreshToken(){}

@@ -41,6 +41,11 @@ public class ReqRes {
     private List<VoteCount> voteCounts;
     private OurUsers ourUsers;
 
+    public ReqRes(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+    public ReqRes(){}
+
     public int getStatusCode() {
         return statusCode;
     }

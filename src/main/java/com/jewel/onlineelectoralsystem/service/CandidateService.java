@@ -95,4 +95,8 @@ public class CandidateService {
         return  candidateRepository.findByPositionId(positionId);
     }
 
+    public Candidate getCandidateById(Integer id){
+        return  candidateRepository.findById(id).orElse(null);
+    }
+
 }

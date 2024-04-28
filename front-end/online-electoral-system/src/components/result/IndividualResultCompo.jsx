@@ -1,5 +1,5 @@
 import  { useEffect, useState } from "react";
-import { retrieveResult } from "../../api/resultApiService";
+import { retrieveResult } from "../../apiservice/resultApiService";
 import {
   BarChart,
   Bar,

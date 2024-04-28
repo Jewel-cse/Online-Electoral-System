@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { FaTrash } from "react-icons/fa";
-import {deleteVoterApi,retrieveVoterListApi,} from "../../api/VoterApiService";
+import {deleteVoterApi,retrieveVoterListApi} from "../../apiservice/VoterApiService";
 import { useNavigate, useParams } from "react-router-dom";
 
 const VoterListComponent = () => {

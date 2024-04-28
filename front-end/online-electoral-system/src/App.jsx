@@ -38,6 +38,7 @@ export default function App() {
           <Routes>
             <Route index element={<HomeComponent />} />
             <Route path="/login" element={<LoginComponent/>} />
+            <Route path="/sign-up" element={<LoginComponent/>} />
             {/* Inside admin panel */}
             <Route path="/admin" element={<AdminLayout />}>
               {/* voter operation */}

@@ -4,7 +4,7 @@ import{useNavigate} from "react-router-dom"
 import { useAuth } from "../security/AuthContext";
 
 export default function AdminLayout({ children }) {
-  // const positionId = 'president'
+  
   
   const navigate = useNavigate()
   function exit() {
@@ -45,17 +45,17 @@ export default function AdminLayout({ children }) {
       </div>
 
       {/* Right Side */}
-      <div className="flex-1">
-        <div className="bg-brand_color py-1 px-1 flex justify-between items-center">
+      <div className="flex-1 bg-green-50 ">
+        <div className=" py-1 px-4 flex justify-between items-center">
           <div></div>
           <div>
-            <h2 className="text-lg text-white font-semibold mb-2 font-mono">
+            <h2 className="text-lg text-Blue font-semibold mb-2 font-mono">
               Admin Panel
             </h2>
           </div>
           <div>
-            <button className="text-black bg-red-400 px-4 py-1 rounded hover:bg-red-600" onClick={exit}>
-              logout
+            <button className="text-black bg-violet-700 px-6 py-2 rounded hover:bg-red-600" onClick={exit}>
+              close
             </button>
           </div>
         </div>

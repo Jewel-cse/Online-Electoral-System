@@ -17,8 +17,8 @@ import java.util.function.Function;
 @Component
 public class JWTUtils {
     private SecretKey key;
-    private static final long EXPIRATION_TIME = 60*1000 ;// milis
-    private static final long EXPIRATION_TIME_REFRESH = 3*60*1000 ;
+    public static final long EXPIRATION_TIME = 60*1000 ;// milis
+    public static final long EXPIRATION_TIME_REFRESH = 24*60*60*1000 ;
     public JWTUtils(){
         String secretString = "1231jk231jl3j1k32j1l23j1k23j1klj312kl3j21k3j1j23kg1g31oiuy312iu2";
         byte[] keyBytes = Base64.getDecoder().decode(secretString.getBytes(StandardCharsets.UTF_8));

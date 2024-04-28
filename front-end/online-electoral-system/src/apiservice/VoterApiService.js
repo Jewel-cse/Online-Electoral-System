@@ -1,13 +1,6 @@
-import axios from "axios";
+import { apiClient } from "./api";
 
-const jwt = localStorage.getItem('jwt') ? localStorage.getItem('jwt') : null;
-export const apiClient = axios.create({
-  baseURL: "http://localhost:8080",
-  headers: {
-    Authorization: `Bearer ${jwt}`
-  }
-});
-
+ 
 export const retrieveVoterListApi = () => {
   return apiClient.get("/api/v1/admin-user/voters");
 }
